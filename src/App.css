@@ -1,0 +1,37 @@
+.app {
+  display: grid;
+  grid-template-columns: 2fr 8fr;
+  width: 100vw;
+  background-color: azure;
+  margin: 0 auto;
+  min-height: 100vw;
+}
+
+.side-menu {
+  display: flex;
+  flex-direction: column;
+
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
