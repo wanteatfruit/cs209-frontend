@@ -5,6 +5,7 @@ import {
   Divider,
   Icon,
   IconButton,
+  SkeletonText,
   Stat,
   StatLabel,
   StatNumber,
@@ -12,26 +13,58 @@ import {
 import axios from "axios";
 import dayjs from "dayjs";
 import QuestionDistribution from "./components/QuestionDistribution";
+import AcceptedAnswerPie from "./components/AcceptedAnswerPie";
+import AnswerCountPie from "./components/AnswerCountPie";
+const SELECTED = " bg-orange-400 w-5/6 text-white p-3 rounded-md";
+const UNSELECTED = "text-white p-3 rounded-md w-5/6";
 function App() {
-
   const [avgAnswers, setAvgAnswers] = useState(0);
   const [Unanswered, setUnanswered] = useState(0);
   const [maxAnswers, setMaxAnswers] = useState(0);
   const [allQuestions, setAllQuestions] = useState([]);
+  const [acceptedQuestion, setAcceptedQuestion] = useState([]);
+  const [answerDistribution, setAnswerDistribution] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getall = axios.get("http://localhost:9090/questions/getall");
-    const getavg = axios.get("http://localhost:9090/questions/get-average-answer-count");
-    const getmax = axios.get("http://localhost:9090/questions/get-max-answer-count");
-    const getunans = axios.get("http://localhost:9090/questions/get-unanswered-count");
-    axios.all([getall, getavg, getmax, getunans]).then(axios.spread((...allData) => {
-      console.log(allData[0].data);
-      setAllQuestions(allData[0].data);
-      setAvgAnswers(allData[1].data);
-      setMaxAnswers(allData[2].data);
-      setUnanswered(allData[3].data);
-    })).catch(err => console.log(err));
+    const getavg = axios.get(
+      "http://localhost:9090/questions/get-average-answer-count"
+    );
+    const getmax = axios.get(
+      "http://localhost:9090/questions/get-max-answer-count"
+    );
+    const getunans = axios.get(
+      "http://localhost:9090/questions/get-unanswered-count"
+    );
+    const getanscntdist = axios.get(
+      "http://localhost:9090/questions/get-answer-count-distribution"
+    );
+    const getacceptedquestion = axios.get(
+      "http://localhost:9090/questions/get-accepted-questions"
+    );
 
-
+    axios
+      .all([
+        getall,
+        getavg,
+        getmax,
+        getunans,
+        getanscntdist,
+        getacceptedquestion,
+      ])
+      .then(
+        axios.spread((...allData) => {
+          console.log(allData[0].data);
+          setAllQuestions(allData[0].data);
+          setAvgAnswers(allData[1].data);
+          setMaxAnswers(allData[2].data);
+          setUnanswered(allData[3].data);
+          setAnswerDistribution(allData[4].data);
+          setAcceptedQuestion(allData[5].data);
+          setLoading(false);
+        })
+      )
+      .catch((err) => console.log(err));
   }, []);
   return (
     <>
@@ -45,16 +78,23 @@ function App() {
           }}
         >
           <div className=" px-10 py-8 flex justify-between">
-            <Icon mt={1} as={BsStackOverflow} w={10} h={10} color="orange" />
+            <Icon
+              mt={1}
+              as={BsStackOverflow}
+              w={10}
+              h={10}
+              color="orange.300"
+            />
             <div>
-            <p className="text-white text-lg font-semibold ">StackOverflow</p>
-            <p className="text-white decoration-wavy font-semibold">Visualization👀</p>
-
+              <p className="text-white text-lg font-semibold ">StackOverflow</p>
+              <p className="text-white decoration-wavy font-semibold">
+                Visualization👀
+              </p>
             </div>
           </div>
           <Divider />
           <div
-            className="side-menu-item"
+            className="side-menu-item space-y-4"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -63,20 +103,44 @@ function App() {
               paddingTop: "10%",
             }}
           >
-            <button className="bg-sky-500 p-4 rounded-md w-5/6  text-white hover:bg-sky-600 ">
-              Dashboard
-            </button>
-            {/* <button className="bg">Question</button> */}
+            {window.location.pathname == "/" ? (
+              <a href="/" className={SELECTED}>
+                Dashboard
+              </a>
+            ) : (
+              <a href="/" className={UNSELECTED}>
+                Dashboard
+              </a>
+            )}
+            {window.location.pathname == "/question" ? (
+              <a href="/question" className={SELECTED}>
+                Question
+              </a>
+            ) : (
+              <a href="/question" className={UNSELECTED}>
+                Question
+              </a>
+            )}
+            {window.location.pathname == "/answer" ? (
+              <a href="/answer" className={SELECTED}>
+                Answers
+              </a>
+            ) : (
+              <a href="/answer" className={UNSELECTED}>
+                Answers
+              </a>
+            )}
           </div>
         </div>
+
         <div className="main" style={{ margin: "12px" }}>
           <header className="pb-4 p-4 pr-10 flex justify-between">
             <div>
-            <h1>Dashboard</h1>
-            <p>
-              Date range: {dayjs.unix(1221225856).format("YYYY/MM/DD")} -{" "}
-              {dayjs.unix(1682602397).format("YYYY/MM/DD")}
-            </p>
+              <h1>{window.location.pathname}</h1>
+              <p>
+                Date range: {dayjs.unix(1221225856).format("YYYY/MM/DD")} -{" "}
+                {dayjs.unix(1682602397).format("YYYY/MM/DD")}
+              </p>
             </div>
             <IconButton
               variant={"ghost"}
@@ -86,54 +150,85 @@ function App() {
               m={0}
               p={0}
             />
-
           </header>
           <Divider p={0} m={0} />
-          <div className="flex-col space-y-4 px-8 py-10">
-            <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
-              <Stat
-                bgColor={"white"}
-                borderRadius={"12px"}
-                pt={5}
-                pl={4}
-              >
-                <StatLabel>Questions Collected</StatLabel>
-                <StatNumber>{allQuestions.length}</StatNumber>
-              </Stat>
-              <Stat bgColor={"white"} borderRadius={"12px"} pt={5} pl={4}>
-                <StatLabel>Unanswered Questions</StatLabel>
-                <StatNumber> {Unanswered} </StatNumber>
-              </Stat>
-              <Stat bgColor={"white"} borderRadius={"12px"} py={5} pl={4}>
-                <StatLabel>Average #Answers</StatLabel>
-                <StatNumber>{avgAnswers}</StatNumber>
-              </Stat>
-              <Stat bgColor={"white"} borderRadius={"12px"} py={5} pl={4}>
-                <StatLabel>Maximum Answer Count</StatLabel>
-                <StatNumber>{maxAnswers}</StatNumber>
-              </Stat>
+          <SkeletonText isLoaded={!loading}>
+            <div className="flex-col space-y-4 px-8 py-10">
+              {window.location.pathname == "/" && (
+                <>
+                  <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
+                    <Stat bgColor={"white"} borderRadius={"12px"} pt={5} pl={4}>
+                      <StatLabel>Questions Collected</StatLabel>
+                      <StatNumber>{allQuestions.length}</StatNumber>
+                    </Stat>
+                    <Stat bgColor={"white"} borderRadius={"12px"} pt={5} pl={4}>
+                      <StatLabel>Unanswered Questions</StatLabel>
+                      <StatNumber> {Unanswered} </StatNumber>
+                    </Stat>
+                    <Stat bgColor={"white"} borderRadius={"12px"} py={5} pl={4}>
+                      <StatLabel>Average #Answers</StatLabel>
+                      <StatNumber>{avgAnswers}</StatNumber>
+                    </Stat>
+                    <Stat bgColor={"white"} borderRadius={"12px"} py={5} pl={4}>
+                      <StatLabel>Maximum Answer Count</StatLabel>
+                      <StatNumber>{maxAnswers}</StatNumber>
+                    </Stat>
+                  </div>
+                  <div className="grid gap-4 grid-cols-1">
+                    <div className="bg-white rounded-lg py-4 pr-8">
+                      <div className="chart w-full h-96" style={{}}>
+                        <QuestionDistribution questions={getAverageByDate(allQuestions)} />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+              {window.location.pathname == "/question" && <></>}
+              {window.location.pathname == "/answer" && (
+                <>
+                  <div className="grid gap-4 grid-cols-2">
+                    <div className="bg-white rounded-lg py-6">
+                      <div className="w-full h-96">
+                        <AcceptedAnswerPie />
+                      </div>
+                    </div>
+                    <div className="bg-white rounded-lg py-6">
+                      <div className="w-full h-96">
+                        <AnswerCountPie data={answerDistribution} />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
-            <div className="grid gap-4 grid-cols-1">
-              <div className="bg-white rounded-lg py-4 pr-8" >
-                <div className="chart w-full  h-96" style={{}}></div>
-                 <QuestionDistribution questions={allQuestions} />
-                {/* <h2 className="ml-10 text-xl mb-4">Answer Distribution Chart</h2>
-                <ResponsiveContainer height={300} width={"100%"}>
-                  <LineChart data={allQuestions} width={'100%'} height={500} >
-                    <XAxis dataKey="questionId" />
-                    <YAxis />
-                    <Line type="monotone" dataKey="answerCount" stroke="#8884d8" />
-
-                  </LineChart>
-                </ResponsiveContainer> */}
-              </div>
-              
-            </div>
-          </div>
+          </SkeletonText>
         </div>
       </div>
     </>
   );
+}
+
+function getAverageByDate(questions) {
+  let questions_copy = JSON.parse(JSON.stringify(questions));
+  questions_copy.forEach((q) => {
+    q.creationDate = dayjs.unix(q.creationDate).format("YYYY/MM/DD");
+  });
+  const sum = questions_copy.reduce((creationDate, answerCount) => {
+    creationDate[answerCount.creationDate] =
+      (creationDate[answerCount.creationDate] || 0) + answerCount.answerCount ||
+      1;
+    return creationDate;
+  }, {});
+  const count = {};
+  questions_copy.forEach((x) => {
+    count[x.creationDate] = (count[x.creationDate] || 0) + 1;
+  });
+  const average = {};
+  Object.keys(sum).forEach((x) => {
+    average[x] = sum[x] / count[x];
+  });
+  console.log(average)
+  return average;
 }
 
 export default App;

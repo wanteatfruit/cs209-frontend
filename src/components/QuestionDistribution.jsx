@@ -5,14 +5,14 @@ export default function QuestionDistribution({ questions }) {
   const option = {
     tooltip: {},
     title:{
-        text:'Question and Answer Count Distribution',
+        text:'Question Creation Time and Answer Count Distribution',
         left:'center',
         textStyle:{
             fontFamily:'Poppins',
         }
     },
     xAxis: {
-      data: questions.map((q,index) => {return index+1}),
+      data: Object.keys(questions),
       axisLabel: {
         fontFamily: "Poppins",
       },
@@ -36,7 +36,7 @@ export default function QuestionDistribution({ questions }) {
       {
         type: "line",
         name:'Question Index',
-        data: questions.map((q) => q.answerCount),
+        data: Object.values(questions),
       },
     ],
     dataZoom:[
@@ -47,13 +47,20 @@ export default function QuestionDistribution({ questions }) {
     ]
   };
   useEffect(() => {
-    const chartDom = document.querySelector(".chart");
+    //group by and average time stamp
+    
+
+    const chartDom = document.getElementById("chart");
     const myChart = echarts.init(chartDom);
     myChart.setOption(option);
+    window.addEventListener("resize", () => {
+        myChart.resize();
+        });
+
   });
   return (
     <>
-      <div className="chart"></div>
+      <div id="chart" className="w-full h-full"></div>
     </>
   );
 }
