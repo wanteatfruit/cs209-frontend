@@ -1,58 +1,46 @@
 import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { BsGithub, BsStackOverflow } from "react-icons/bs";
 import {
-  Button,
-  ButtonGroup,
   Divider,
-  Heading,
   Icon,
   IconButton,
   Stat,
-  StatHelpText,
   StatLabel,
   StatNumber,
 } from "@chakra-ui/react";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-
+import QuestionDistribution from "./components/QuestionDistribution";
 function App() {
+
   const [avgAnswers, setAvgAnswers] = useState(0);
   const [Unanswered, setUnanswered] = useState(0);
   const [maxAnswers, setMaxAnswers] = useState(0);
   const [allQuestions, setAllQuestions] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:9090/questions/getall").then((res) => {
-      console.log(res.data);
-      setAllQuestions(res.data);
-    });
-    axios
-      .get("http://localhost:9090/questions/get-average-answer-count")
-      .then((res) => {
-        setAvgAnswers(res.data);
-      });
-    axios
-      .get("http://localhost:9090/questions/get-max-answer-count")
-      .then((res) => {
-        setMaxAnswers(res.data);
-      });
-    axios
-      .get("http://localhost:9090/questions/get-unanswered-count")
-      .then((res) => {
-        setUnanswered(res.data);
-      });
+    const getall = axios.get("http://localhost:9090/questions/getall");
+    const getavg = axios.get("http://localhost:9090/questions/get-average-answer-count");
+    const getmax = axios.get("http://localhost:9090/questions/get-max-answer-count");
+    const getunans = axios.get("http://localhost:9090/questions/get-unanswered-count");
+    axios.all([getall, getavg, getmax, getunans]).then(axios.spread((...allData) => {
+      console.log(allData[0].data);
+      setAllQuestions(allData[0].data);
+      setAvgAnswers(allData[1].data);
+      setMaxAnswers(allData[2].data);
+      setUnanswered(allData[3].data);
+    })).catch(err => console.log(err));
+
+
   }, []);
   return (
     <>
-      <div className="app font-sans">
+      <div className="app font-sans bg-slate-50 ">
         <div
           className="side-menu"
           style={{
             backgroundColor: "#2d3748",
-            margin: "12px",
+            margin: "16px",
             borderRadius: "10px",
           }}
         >
@@ -107,7 +95,6 @@ function App() {
                 bgColor={"white"}
                 borderRadius={"12px"}
                 pt={5}
-                py={4}
                 pl={4}
               >
                 <StatLabel>Questions Collected</StatLabel>
@@ -128,7 +115,9 @@ function App() {
             </div>
             <div className="grid gap-4 grid-cols-1">
               <div className="bg-white rounded-lg py-4 pr-8" >
-                <h2 className="ml-10 text-xl mb-4">Answer Distribution Chart</h2>
+                <div className="chart w-full  h-96" style={{}}></div>
+                 <QuestionDistribution questions={allQuestions} />
+                {/* <h2 className="ml-10 text-xl mb-4">Answer Distribution Chart</h2>
                 <ResponsiveContainer height={300} width={"100%"}>
                   <LineChart data={allQuestions} width={'100%'} height={500} >
                     <XAxis dataKey="questionId" />
@@ -136,7 +125,7 @@ function App() {
                     <Line type="monotone" dataKey="answerCount" stroke="#8884d8" />
 
                   </LineChart>
-                </ResponsiveContainer>
+                </ResponsiveContainer> */}
               </div>
               
             </div>

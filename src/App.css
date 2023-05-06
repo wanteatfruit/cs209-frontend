@@ -1,17 +1,12 @@
 .app {
   display: grid;
-  grid-template-columns: 2fr 8fr;
-  width: 100vw;
-  background-color: azure;
+  grid-template-columns: 2fr 12fr;
+  width: 100%;
   margin: 0 auto;
   min-height: 100vw;
+  
 }
 
-.side-menu {
-  display: flex;
-  flex-direction: column;
-
-}
 
 @keyframes logo-spin {
   from {
