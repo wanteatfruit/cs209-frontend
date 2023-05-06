@@ -15,6 +15,8 @@ import dayjs from "dayjs";
 import QuestionDistribution from "./components/QuestionDistribution";
 import AcceptedAnswerPie from "./components/AcceptedAnswerPie";
 import AnswerCountPie from "./components/AnswerCountPie";
+import TagCloud from "./components/TagWordCloud";
+export const CARDBG = "bg-white rounded-lg py-4 pr-8";
 const SELECTED = " bg-orange-400 w-5/6 text-white p-3 rounded-md";
 const UNSELECTED = "text-white p-3 rounded-md w-5/6";
 function App() {
@@ -23,6 +25,7 @@ function App() {
   const [maxAnswers, setMaxAnswers] = useState(0);
   const [allQuestions, setAllQuestions] = useState([]);
   const [acceptedQuestion, setAcceptedQuestion] = useState([]);
+  const [tagCount, setTagCount] = useState([]);
   const [answerDistribution, setAnswerDistribution] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -42,6 +45,7 @@ function App() {
     const getacceptedquestion = axios.get(
       "http://localhost:9090/questions/get-accepted-questions"
     );
+    const gettagcount = axios.get("http://localhost:9090/tags/count");
 
     axios
       .all([
@@ -51,6 +55,7 @@ function App() {
         getunans,
         getanscntdist,
         getacceptedquestion,
+        gettagcount,
       ])
       .then(
         axios.spread((...allData) => {
@@ -61,6 +66,7 @@ function App() {
           setUnanswered(allData[3].data);
           setAnswerDistribution(allData[4].data);
           setAcceptedQuestion(allData[5].data);
+          setTagCount(allData[6].data);
           setLoading(false);
         })
       )
@@ -175,10 +181,20 @@ function App() {
                     </Stat>
                   </div>
                   <div className="grid gap-4 grid-cols-1">
-                    <div className="bg-white rounded-lg py-4 pr-8">
+                    <div className={CARDBG}>
                       <div className="chart w-full h-96" style={{}}>
-                        <QuestionDistribution questions={getAverageByDate(allQuestions)} />
+                        <QuestionDistribution
+                          questions={getAverageByDate(allQuestions)}
+                        />
                       </div>
+                    </div>
+                  </div>
+                  <div className="grid gap-4 grid-cols-2">
+                    <div className={CARDBG}> 
+                    <div className="w-full h-96">
+                    <TagCloud wordCloudData={tagCount} />
+                    </div>
+                    
                     </div>
                   </div>
                 </>
@@ -227,7 +243,6 @@ function getAverageByDate(questions) {
   Object.keys(sum).forEach((x) => {
     average[x] = sum[x] / count[x];
   });
-  console.log(average)
   return average;
 }
 

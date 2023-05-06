@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 import * as echarts from "echarts";
-export default function QuestionDistribution({ questions }) {
+export default function ResolutionTime({ questions }) {
   const option = {
     tooltip: {},
     title: {
-      text: "Question Creation Time and Answer Count Distribution",
+      text: "Resolution Time Distribution",
       left: "center",
       textStyle: {
         fontFamily: "Poppins",
@@ -74,6 +74,6 @@ export default function QuestionDistribution({ questions }) {
   );
 }
 
-QuestionDistribution.propTypes = {
+ResolutionTime.propTypes = {
   questions: PropTypes.array.isRequired,
 };

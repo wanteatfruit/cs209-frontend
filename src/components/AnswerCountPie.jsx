@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import * as echarts from "echarts";
-import axios from "axios";
 export default function AnswerCountPie({data}) {
   const option = {
     tooltip: {
@@ -19,7 +18,7 @@ export default function AnswerCountPie({data}) {
         right:'30',
     },
     title: {
-      text: "Accepted Answer Distribution",
+      text: "Answer Count Distribution",
       left: "center",
       textStyle: {
         fontFamily: "Poppins",
@@ -28,7 +27,7 @@ export default function AnswerCountPie({data}) {
     series: [
       {
         type: "pie",
-        name: "Answer Count Distribution",
+        name: "Answer Count",
         center: ['50%', '50%'],
         itemStyle:{
             borderRadius:10,
