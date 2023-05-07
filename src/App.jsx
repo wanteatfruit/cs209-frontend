@@ -18,6 +18,7 @@ import AcceptedAnswerPie from "./components/AcceptedAnswerPie";
 import AnswerCountPie from "./components/AnswerCountPie";
 import TagCloud from "./components/TagWordCloud";
 import QuestionTable from "./components/QuestionTable";
+import ResolutionTime from "./components/ResolutionTime";
 const CARDBG = "bg-white rounded-lg py-4 pr-8";
 const SELECTED = " bg-orange-400 w-5/6 text-white p-3 rounded-md";
 const UNSELECTED = "text-white p-3 rounded-md w-5/6 hover:bg-gray-600";
@@ -27,6 +28,7 @@ function App() {
   const [maxAnswer, setMaxAnswer] = useState(0);
   const [allQuestions, setAllQuestions] = useState([]);
   const [acceptedQuestion, setAcceptedQuestion] = useState([]);
+  const [resolutionTimes, setResolutionTimes] = useState([]);
   const [tagCount, setTagCount] = useState([]);
   const [answerDistribution, setAnswerDistribution] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,6 +50,9 @@ function App() {
       "http://localhost:9090/questions/get-accepted-questions"
     );
     const gettagcount = axios.get("http://localhost:9090/tags/count");
+    const getresolution = axios.get(
+      "http://localhost:9090/answers/get-resolution-time"
+    );
 
     axios
       .all([
@@ -58,6 +63,7 @@ function App() {
         getanscntdist,
         getacceptedquestion,
         gettagcount,
+        getresolution,
       ])
       .then(
         axios.spread((...allData) => {
@@ -69,6 +75,7 @@ function App() {
           setAnswerDistribution(allData[4].data);
           setAcceptedQuestion(allData[5].data);
           setTagCount(allData[6].data);
+          setResolutionTimes(allData[7].data);
           setLoading(false);
         })
       )
@@ -219,6 +226,15 @@ function App() {
                       </div>
                     </div>
                   </div>
+                  <div className="grid gap-4 grid-cols-3">
+                    <div className="bg-white rounded-lg py-6 col-span-2">
+                      <div className="w-full h-96">
+                        <ResolutionTime
+                          data={parseResolution(resolutionTimes)}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </>
               )}
             </div>
@@ -227,6 +243,34 @@ function App() {
       </div>
     </>
   );
+}
+
+function parseResolution(data) {
+  let resolutionTime = [
+    { range: "Day", count: 0 },
+    { range: "Week", count: 0 },
+    { range: "Month", count: 0 },
+    { range: "Year", count: 0 },
+    { range: "More than a year", count: 0 },
+  ];
+  data.forEach((q) => {
+    let qDate = dayjs.unix(q.questionCreationDate);
+    let aDate = dayjs.unix(q.answerCreationDate);
+    let diff = aDate.diff(qDate, "day");
+    // console.log(diff);
+    if (diff <= 1) {
+      resolutionTime[0].count++;
+    } else if (diff <= 7) {
+      resolutionTime[1].count++;
+    } else if (diff <= 30) {
+      resolutionTime[2].count++;
+    } else if (diff <= 365) {
+      resolutionTime[3].count++;
+    } else {
+      resolutionTime[4].count++;
+    }
+  });
+  return resolutionTime;
 }
 
 function getAverageByDate(questions) {

@@ -1,9 +1,20 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 import * as echarts from "echarts";
-export default function ResolutionTime({ questions }) {
+export default function ResolutionTime({ data }) {
+
+
+
   const option = {
-    tooltip: {},
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow",
+      },
+      textStyle: {
+        fontFamily: "Poppins",
+      },
+    },
     title: {
       text: "Resolution Time Distribution",
       left: "center",
@@ -12,24 +23,12 @@ export default function ResolutionTime({ questions }) {
       },
     },
     xAxis: {
-      data: Object.keys(questions),
+      data: data.map((item) => item.range),
       axisLabel: {
         fontFamily: "Poppins",
       },
-      name: "Question Creation Time",
-      nameLocation: "center",
-      nameGap: 30,
-      nameTextStyle: {
-        fontFamily: "Poppins",
-      },
-    },
-    visualMap: {
-      show: false,
-      type: "continuous",
-      seriesIndex: 1,
-      dimension: 0,
-      min: 0,
-      max: questions.length - 1,
+      type:'category',
+      minInterval: 0
     },
     yAxis: {
       name: "Answer Count",
@@ -42,25 +41,19 @@ export default function ResolutionTime({ questions }) {
     },
     series: [
       {
-        type: "line",
+        type: "bar",
         name: "Answer Count",
-        data: Object.values(questions),
+        data: data.map((item) => {return item.count}),
         itemStyle:{
           color:'orange'
         }
       },
-    
-    ],
-    dataZoom: [
-      {
-        type: "inside",
-      },
     ],
   };
-  useEffect(() => {
-    //group by and average time stamp
 
-    const chartDom = document.getElementById("chart");
+  useEffect(() => {
+    console.log(data);
+    const chartDom = document.getElementById("resolution");
     const myChart = echarts.init(chartDom);
     myChart.setOption(option);
     window.addEventListener("resize", () => {
@@ -69,11 +62,11 @@ export default function ResolutionTime({ questions }) {
   });
   return (
     <>
-      <div id="chart" className="w-full h-full"></div>
+      <div id="resolution" className="w-full h-full"></div>
     </>
   );
 }
 
 ResolutionTime.propTypes = {
-  questions: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
 };
