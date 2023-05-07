@@ -39,8 +39,8 @@ export default function AcceptedAnswerPie() {
         },
         data: [
           { value: 506, name: "Answer Accepted" },
-          { value: 248, name: "Answer Unaccepted" },
-          { value: 1245, name: "Not Answered" },
+          { value: 714, name: "Answer Unaccepted" },
+          { value: 779, name: "Not Answered" },
         ],
       },
     ],

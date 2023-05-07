@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.5",
+    "@dogstudio/highway": "^2.2.1",
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
+    "@table-library/react-table-library": "^4.1.4",
     "axios": "^1.4.0",
     "dayjs": "^1.11.7",
     "echarts": "^5.4.2",

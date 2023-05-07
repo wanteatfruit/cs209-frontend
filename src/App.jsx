@@ -7,6 +7,7 @@ import {
   IconButton,
   SkeletonText,
   Stat,
+  StatHelpText,
   StatLabel,
   StatNumber,
 } from "@chakra-ui/react";
@@ -16,13 +17,14 @@ import QuestionDistribution from "./components/QuestionDistribution";
 import AcceptedAnswerPie from "./components/AcceptedAnswerPie";
 import AnswerCountPie from "./components/AnswerCountPie";
 import TagCloud from "./components/TagWordCloud";
-export const CARDBG = "bg-white rounded-lg py-4 pr-8";
+import QuestionTable from "./components/QuestionTable";
+const CARDBG = "bg-white rounded-lg py-4 pr-8";
 const SELECTED = " bg-orange-400 w-5/6 text-white p-3 rounded-md";
-const UNSELECTED = "text-white p-3 rounded-md w-5/6";
+const UNSELECTED = "text-white p-3 rounded-md w-5/6 hover:bg-gray-600";
 function App() {
   const [avgAnswers, setAvgAnswers] = useState(0);
   const [Unanswered, setUnanswered] = useState(0);
-  const [maxAnswers, setMaxAnswers] = useState(0);
+  const [maxAnswer, setMaxAnswer] = useState(0);
   const [allQuestions, setAllQuestions] = useState([]);
   const [acceptedQuestion, setAcceptedQuestion] = useState([]);
   const [tagCount, setTagCount] = useState([]);
@@ -34,7 +36,7 @@ function App() {
       "http://localhost:9090/questions/get-average-answer-count"
     );
     const getmax = axios.get(
-      "http://localhost:9090/questions/get-max-answer-count"
+      "http://localhost:9090/questions/get-max-answer-question"
     );
     const getunans = axios.get(
       "http://localhost:9090/questions/get-unanswered-count"
@@ -62,7 +64,7 @@ function App() {
           console.log(allData[0].data);
           setAllQuestions(allData[0].data);
           setAvgAnswers(allData[1].data);
-          setMaxAnswers(allData[2].data);
+          setMaxAnswer(allData[2].data);
           setUnanswered(allData[3].data);
           setAnswerDistribution(allData[4].data);
           setAcceptedQuestion(allData[5].data);
@@ -177,7 +179,7 @@ function App() {
                     </Stat>
                     <Stat bgColor={"white"} borderRadius={"12px"} py={5} pl={4}>
                       <StatLabel>Maximum Answer Count</StatLabel>
-                      <StatNumber>{maxAnswers}</StatNumber>
+                      <StatNumber>{maxAnswer.answerCount}</StatNumber>
                     </Stat>
                   </div>
                   <div className="grid gap-4 grid-cols-1">
@@ -190,16 +192,19 @@ function App() {
                     </div>
                   </div>
                   <div className="grid gap-4 grid-cols-2">
-                    <div className={CARDBG}> 
-                    <div className="w-full h-96">
-                    <TagCloud wordCloudData={tagCount} />
-                    </div>
-                    
+                    <div className={CARDBG}>
+                      <div className="w-full h-96">
+                        <TagCloud wordCloudData={tagCount} />
+                      </div>
                     </div>
                   </div>
                 </>
               )}
-              {window.location.pathname == "/question" && <></>}
+              {window.location.pathname == "/question" && (
+                <>
+                  <QuestionTable />
+                </>
+              )}
               {window.location.pathname == "/answer" && (
                 <>
                   <div className="grid gap-4 grid-cols-2">
