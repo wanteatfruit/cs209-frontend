@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 import * as echarts from "echarts";
-export default function ResolutionTime({ data }) {
+export default function TopTenClasses({ data}) {
 
 
 
@@ -16,14 +16,14 @@ export default function ResolutionTime({ data }) {
       },
     },
     title: {
-      text: "Resolution Time Distribution",
+      text: "Top-10 Classes",
       left: "center",
       textStyle: {
         fontFamily: "Poppins",
       },
     },
     xAxis: {
-      data: data.map((item) => item.range),
+      data: data.map((item) => item.name),
       axisLabel: {
         fontFamily: "Poppins",
       },
@@ -31,7 +31,7 @@ export default function ResolutionTime({ data }) {
       minInterval: 0
     },
     yAxis: {
-      name: "Question Count",
+      name: "Answer Count",
       axisLabel: {
         fontFamily: "Poppins",
       },
@@ -42,19 +42,19 @@ export default function ResolutionTime({ data }) {
     series: [
       {
         type: "bar",
-        name: "Question Count",
-        data: data.map((item) => {return item.count}),
+        name: "Answer Count",
+        data: data.map((item) => {return item.value}),
         itemStyle:{
-          color:'orange',
-          borderRadius:[10,10,0,0]
+          color:'orange'
         }
       },
+      
     ],
   };
 
   useEffect(() => {
     console.log(data);
-    const chartDom = document.getElementById("resolution");
+    const chartDom = document.getElementById("top-ten");
     const myChart = echarts.init(chartDom);
     myChart.setOption(option);
     window.addEventListener("resize", () => {
@@ -63,11 +63,11 @@ export default function ResolutionTime({ data }) {
   });
   return (
     <>
-      <div id="resolution" className="w-full h-full"></div>
+      <div id="top-ten" className="w-full h-full"></div>
     </>
   );
 }
 
-ResolutionTime.propTypes = {
+TopTenClasses.propTypes = {
   data: PropTypes.array.isRequired,
 };

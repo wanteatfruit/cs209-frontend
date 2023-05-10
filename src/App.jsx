@@ -19,6 +19,8 @@ import AnswerCountPie from "./components/AnswerCountPie";
 import TagCloud from "./components/TagWordCloud";
 import QuestionTable from "./components/QuestionTable";
 import ResolutionTime from "./components/ResolutionTime";
+import TopTenClasses from "./components/TopTenClasses";
+import { codeData } from "./assets/codeData";
 const CARDBG = "bg-white rounded-lg py-4 pr-8";
 const SELECTED = " bg-orange-400 w-5/6 text-white p-3 rounded-md";
 const UNSELECTED = "text-white p-3 rounded-md w-5/6 hover:bg-gray-600";
@@ -31,6 +33,9 @@ function App() {
   const [resolutionTimes, setResolutionTimes] = useState([]);
   const [tagCount, setTagCount] = useState([]);
   const [answerDistribution, setAnswerDistribution] = useState([]);
+  const [classNames, setClassNames] = useState(codeData.classNames);
+  const [methodNames, setMethodNames] = useState(codeData.methodNames);
+  const [annotationNames, setAnnotationNames] = useState(codeData.annotationNames);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getall = axios.get("http://localhost:9090/questions/getall");
@@ -80,6 +85,14 @@ function App() {
         })
       )
       .catch((err) => console.log(err));
+
+    // axios.get("http://localhost:9090/questions/get-question-body").then((res) => {
+    //   setClassNames(res.data.classNames);
+    //   setMethodNames(res.data.methodNames);
+    //   setAnnotationNames(res.data.annotationNames);
+    //   setCodeLoading(false);
+    // });
+
   }, []);
   return (
     <>
@@ -145,6 +158,11 @@ function App() {
                 Answers
               </a>
             )}
+            {window.location.pathname == "/code" ? (
+              <a href="/code" className={SELECTED}>Code Analysis</a>
+            ):(
+              <a href="/code" className={UNSELECTED}>Code Analysis</a>
+            )}
           </div>
         </div>
 
@@ -209,7 +227,17 @@ function App() {
               )}
               {window.location.pathname == "/question" && (
                 <>
-                  <QuestionTable />
+                  {/* <QuestionTable questions={allQuestions}/>
+                   */}
+                   <div className="grid gap-4 grid-cols-3">
+                    <div className="bg-white rounded-xl col-span-2 shadow-md">
+                      <div className="w-full h-96 mt-6">
+                      <ResolutionTime
+                          data={parseResolution(resolutionTimes)}
+                        />
+                      </div>
+                    </div>
+                   </div>
                 </>
               )}
               {window.location.pathname == "/answer" && (
@@ -226,16 +254,28 @@ function App() {
                       </div>
                     </div>
                   </div>
-                  <div className="grid gap-4 grid-cols-3">
+                  <div className="grid gap-4 grid-cols-3 ">
                     <div className="bg-white rounded-lg py-6 col-span-2">
                       <div className="w-full h-96">
-                        <ResolutionTime
-                          data={parseResolution(resolutionTimes)}
-                        />
+
                       </div>
                     </div>
                   </div>
                 </>
+              )}
+              {window.location.pathname == "/code" && (
+                <SkeletonText isLoaded={!loading}>
+                   <div className="grid gap-4 grid-cols-1">
+                    <div className="bg-white rounded-lg py-6">
+                      <div className="w-full h-96">
+                      <TopTenClasses data={classNames.slice(0,10)} annotation={annotationNames.slice(0,10)} method={methodNames.slice(0,10)}/>
+
+                      </div>
+                    </div>
+                    
+                  </div>
+
+                </SkeletonText>
               )}
             </div>
           </SkeletonText>
