@@ -21,6 +21,7 @@ import QuestionTable from "./components/QuestionTable";
 import ResolutionTime from "./components/ResolutionTime";
 import TopTenClasses from "./components/TopTenClasses";
 import { codeData } from "./assets/codeData";
+import parseTree from "./assets/parseTree";
 const CARDBG = "bg-white rounded-lg py-4 pr-8";
 const SELECTED = " bg-orange-400 w-5/6 text-white p-3 rounded-md";
 const UNSELECTED = "text-white p-3 rounded-md w-5/6 hover:bg-gray-600";
@@ -35,7 +36,9 @@ function App() {
   const [answerDistribution, setAnswerDistribution] = useState([]);
   const [classNames, setClassNames] = useState(codeData.classNames);
   const [methodNames, setMethodNames] = useState(codeData.methodNames);
-  const [annotationNames, setAnnotationNames] = useState(codeData.annotationNames);
+  const [annotationNames, setAnnotationNames] = useState(
+    codeData.annotationNames
+  );
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getall = axios.get("http://localhost:9090/questions/getall");
@@ -86,13 +89,7 @@ function App() {
       )
       .catch((err) => console.log(err));
 
-    // axios.get("http://localhost:9090/questions/get-question-body").then((res) => {
-    //   setClassNames(res.data.classNames);
-    //   setMethodNames(res.data.methodNames);
-    //   setAnnotationNames(res.data.annotationNames);
-    //   setCodeLoading(false);
-    // });
-
+        parseTree(codeData.importNames);
   }, []);
   return (
     <>
@@ -159,9 +156,13 @@ function App() {
               </a>
             )}
             {window.location.pathname == "/code" ? (
-              <a href="/code" className={SELECTED}>Code Analysis</a>
-            ):(
-              <a href="/code" className={UNSELECTED}>Code Analysis</a>
+              <a href="/code" className={SELECTED}>
+                Code Analysis
+              </a>
+            ) : (
+              <a href="/code" className={UNSELECTED}>
+                Code Analysis
+              </a>
             )}
           </div>
         </div>
@@ -207,15 +208,7 @@ function App() {
                       <StatNumber>{maxAnswer.answerCount}</StatNumber>
                     </Stat>
                   </div>
-                  <div className="grid gap-4 grid-cols-1">
-                    <div className={CARDBG}>
-                      <div className="chart w-full h-96" style={{}}>
-                        <QuestionDistribution
-                          questions={getAverageByDate(allQuestions)}
-                        />
-                      </div>
-                    </div>
-                  </div>
+
                   <div className="grid gap-4 grid-cols-2">
                     <div className={CARDBG}>
                       <div className="w-full h-96">
@@ -226,19 +219,47 @@ function App() {
                 </>
               )}
               {window.location.pathname == "/question" && (
-                <>
-                  {/* <QuestionTable questions={allQuestions}/>
-                   */}
-                   <div className="grid gap-4 grid-cols-3">
+                <div className="grid gap-4 grid-rows-3">
+                  <div className="grid gap-4 grid-cols-1">
+                    <div className='bg-white rounded-xl shadow-md  '>
+                      <div className="chart w-full h-96 mt-8" style={{}}>
+                        <QuestionDistribution
+                          questions={getAverageByDate(allQuestions)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid gap-4 grid-cols-3">
                     <div className="bg-white rounded-xl col-span-2 shadow-md">
-                      <div className="w-full h-96 mt-6">
-                      <ResolutionTime
+                      <div className="w-full h-96 mt-8">
+                        <ResolutionTime
                           data={parseResolution(resolutionTimes)}
                         />
                       </div>
                     </div>
-                   </div>
-                </>
+                    <div className="grid gap-3 grid-rows-3">
+                      <Stat className="bg-white rounded-lg shadow-md p-4 pt-6">
+                        <StatLabel>Average Resolution Time</StatLabel>
+                        <StatNumber>23 Minutes</StatNumber>
+                        <StatHelpText>Have a meal and come back</StatHelpText>
+                      </Stat>
+                      <a href='https://stackoverflow.com/questions/141284/the-difference-between-the-runnable-and-callable-interfaces-in-java' >
+                      <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
+                        <StatLabel>Fastest Resolution</StatLabel>
+                        <StatNumber>2 Minutes</StatNumber>
+                        <StatHelpText>The difference between the Runnable and Callable interfaces in Java?</StatHelpText>
+                      </Stat>
+                      </a>
+                      <a href='https://stackoverflow.com/questions/4052840/most-efficient-way-to-make-the-first-character-of-a-string-lower-case' >
+                      <Stat className="bg-white rounded-lg shadow-md p-4 hover:bg-slate-100 transition-colors">
+                        <StatLabel>Slowest Resolution</StatLabel>
+                        <StatNumber>5 Years</StatNumber>
+                        <StatHelpText>Most efficient way to make the first character of a String lower case?</StatHelpText>
+                      </Stat>
+                      </a>
+                    </div>
+                  </div>
+                </div>
               )}
               {window.location.pathname == "/answer" && (
                 <>
@@ -256,25 +277,24 @@ function App() {
                   </div>
                   <div className="grid gap-4 grid-cols-3 ">
                     <div className="bg-white rounded-lg py-6 col-span-2">
-                      <div className="w-full h-96">
-
-                      </div>
+                      <div className="w-full h-96"></div>
                     </div>
                   </div>
                 </>
               )}
               {window.location.pathname == "/code" && (
                 <SkeletonText isLoaded={!loading}>
-                   <div className="grid gap-4 grid-cols-1">
+                  <div className="grid gap-4 grid-cols-1">
                     <div className="bg-white rounded-lg py-6">
                       <div className="w-full h-96">
-                      <TopTenClasses data={classNames.slice(0,10)} annotation={annotationNames.slice(0,10)} method={methodNames.slice(0,10)}/>
-
+                        <TopTenClasses
+                          data={classNames.slice(0, 10)}
+                          annotation={annotationNames.slice(0, 10)}
+                          method={methodNames.slice(0, 10)}
+                        />
                       </div>
                     </div>
-                    
                   </div>
-
                 </SkeletonText>
               )}
             </div>
@@ -293,13 +313,21 @@ function parseResolution(data) {
     { range: "Year", count: 0 },
     { range: "More than a year", count: 0 },
   ];
+  let shortest = 10000000;
+  let longest = 0;
+  let total = 0;
   data.forEach((q) => {
     let qDate = dayjs.unix(q.questionCreationDate);
     let aDate = dayjs.unix(q.answerCreationDate);
     let diff = aDate.diff(qDate, "day");
-    // console.log(diff);
+    let minuteDiff = aDate.diff(qDate, "minute");
+    let yearDiff = aDate.diff(qDate, "year");
+    total += diff;
     if (diff <= 1) {
       resolutionTime[0].count++;
+      if(minuteDiff < shortest && minuteDiff!=0){
+        shortest = minuteDiff;
+      }
     } else if (diff <= 7) {
       resolutionTime[1].count++;
     } else if (diff <= 30) {
@@ -308,8 +336,12 @@ function parseResolution(data) {
       resolutionTime[3].count++;
     } else {
       resolutionTime[4].count++;
+      if(yearDiff > longest){
+        longest = yearDiff;
+      }
     }
   });
+  const average = total / data.length;
   return resolutionTime;
 }
 
