@@ -21,7 +21,9 @@ import QuestionTable from "./components/QuestionTable";
 import ResolutionTime from "./components/ResolutionTime";
 import TopTenClasses from "./components/TopTenClasses";
 import { codeData } from "./assets/codeData";
-import parseTree from "./assets/parseTree";
+import  { parseAllTree,parseThreeLevelTree } from "./assets/parseTree";
+import ImportSunBlast from "./components/ImportSunblast";
+import ImportTreeMap from "./components/ImportTreeMap";
 const CARDBG = "bg-white rounded-lg py-4 pr-8";
 const SELECTED = " bg-orange-400 w-5/6 text-white p-3 rounded-md";
 const UNSELECTED = "text-white p-3 rounded-md w-5/6 hover:bg-gray-600";
@@ -34,11 +36,7 @@ function App() {
   const [resolutionTimes, setResolutionTimes] = useState([]);
   const [tagCount, setTagCount] = useState([]);
   const [answerDistribution, setAnswerDistribution] = useState([]);
-  const [classNames, setClassNames] = useState(codeData.classNames);
-  const [methodNames, setMethodNames] = useState(codeData.methodNames);
-  const [annotationNames, setAnnotationNames] = useState(
-    codeData.annotationNames
-  );
+
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getall = axios.get("http://localhost:9090/questions/getall");
@@ -89,7 +87,6 @@ function App() {
       )
       .catch((err) => console.log(err));
 
-        parseTree(codeData.importNames);
   }, []);
   return (
     <>
@@ -284,16 +281,36 @@ function App() {
               )}
               {window.location.pathname == "/code" && (
                 <SkeletonText isLoaded={!loading}>
+                  <div className="grid gap-4 grid-rows-3">
                   <div className="grid gap-4 grid-cols-1">
                     <div className="bg-white rounded-lg py-6">
                       <div className="w-full h-96">
-                        <TopTenClasses
+                        {/* <TopTenClasses
                           data={classNames.slice(0, 10)}
                           annotation={annotationNames.slice(0, 10)}
                           method={methodNames.slice(0, 10)}
-                        />
+                        /> */}
+                        <ImportTreeMap importData={parseAllTree(codeData.importNames)}/>
                       </div>
                     </div>
+                  </div>
+                  <div className="grid gap-4 grid-cols-3">
+                    <div className="bg-white rounded-lg py-6 col-span-2">
+                      <div className="w-full h-96">
+                        <ImportSunBlast importData={parseThreeLevelTree(codeData.importNames)} />
+                      </div>
+                    </div>
+                    <div className="col-span-1 bg-white p-6 rounded-lg">
+                      <div className=" text-center font-bold text-xl">Most Frequently Used Method</div>
+                      <div className="grid grid-rows-5 grid-cols-2 gap-4">
+                      {codeData.methodNames.slice(0,10).map((item)=>(
+                        <div  key={item.name}>
+                        <code>{item.name}</code>
+                        </div>
+                      ))}
+                      </div>
+                    </div>
+                  </div>
                   </div>
                 </SkeletonText>
               )}
