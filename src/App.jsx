@@ -1,10 +1,21 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { BsGithub, BsStackOverflow } from "react-icons/bs";
 import {
+  BsChevronDoubleDown,
+  BsGithub,
+  BsImages,
+  BsStackOverflow,
+} from "react-icons/bs";
+import {
+  Button,
+  Center,
   Divider,
   Icon,
   IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   SkeletonText,
   Stat,
   StatHelpText,
@@ -24,12 +35,10 @@ import { codeData } from "./assets/codeData";
 import { parseAllTree, parseThreeLevelTree } from "./assets/parseTree";
 import ImportSunBlast from "./components/ImportSunblast";
 import ImportTreeMap from "./components/ImportTreeMap";
-import TopTenAnnotations from "./components/TopTenAnnotations";
-import hljs from "highlight.js";
-import Highlight from "react-highlight";
 const CARDBG = "bg-white rounded-lg py-4 pr-8";
-const SELECTED = " bg-orange-400 w-5/6 text-white p-3 rounded-md";
-const UNSELECTED = "text-white p-3 rounded-md w-5/6 hover:bg-gray-600";
+const SELECTED = " bg-orange-400 w-5/6 text-white  p-3 rounded-md";
+const UNSELECTED =
+  "text-white p-3 rounded-md w-5/6 hover:bg-gray-600 hover:translate-x-2 transition";
 function App() {
   const [avgAnswers, setAvgAnswers] = useState(0);
   const [Unanswered, setUnanswered] = useState(0);
@@ -39,8 +48,9 @@ function App() {
   const [resolutionTimes, setResolutionTimes] = useState([]);
   const [tagCount, setTagCount] = useState([]);
   const [answerDistribution, setAnswerDistribution] = useState([]);
-
   const [loading, setLoading] = useState(true);
+  const [codeDataDisplay, setCodeDataDisplay] = useState(codeData.classNames.slice(0, 15));
+  const [chooseCodeType, setChooseCodeType] = useState("Classes");
   useEffect(() => {
     const getall = axios.get("http://localhost:9090/questions/getall");
     const getavg = axios.get(
@@ -89,17 +99,13 @@ function App() {
         })
       )
       .catch((err) => console.log(err));
-
-
   }, []);
   return (
     <>
       <head></head>
 
-      <div className="grid grid-cols-10 w-full m-auto  font-sans bg-slate-50 ">
-        <div
-          className=" m-4 col-span-2  bg-blue-900 rounded-2xl"
-        >
+      <div className="grid grid-cols-10 w-full m-auto min-h-screen  font-sans bg-slate-50 ">
+        <div className=" m-4 col-span-2 bg-sky-950 rounded-2xl">
           <div className=" px-10 py-8 flex justify-between">
             <Icon
               mt={1}
@@ -128,11 +134,11 @@ function App() {
           >
             {window.location.pathname == "/" ? (
               <a href="/" className={SELECTED}>
-                Dashboard
+                Overview
               </a>
             ) : (
               <a href="/" className={UNSELECTED}>
-                Dashboard
+                Overview
               </a>
             )}
             {window.location.pathname == "/question" ? (
@@ -154,7 +160,10 @@ function App() {
               </a>
             )}
             {window.location.pathname == "/code" ? (
-              <a href="/code" className={SELECTED}>
+              <a
+                href="/code"
+                className="bg-orange-400 w-5/6 transition-transform text-white p-3 rounded-md "
+              >
                 Code Analysis
               </a>
             ) : (
@@ -168,11 +177,14 @@ function App() {
         <div className="main col-span-8" style={{ margin: "12px" }}>
           <header className="pb-4 p-4 pr-10 flex justify-between">
             <div>
-              <h1>{window.location.pathname}</h1>
-              <p>
-                Date range: {dayjs.unix(1221225856).format("YYYY/MM/DD")} -{" "}
+              <h1 className=" text-5xl font-bold font bg-gradient-to-r bg-clip-text text-transparent from-orange-600 to-orange-400">
+                Data Visualization
+              </h1>
+              {/* <p className=" text-orange-600">
+                {"Data range: "}
+                {dayjs.unix(1221225856).format("YYYY/MM/DD")} -{" "}
                 {dayjs.unix(1682602397).format("YYYY/MM/DD")}
-              </p>
+              </p> */}
             </div>
             <IconButton
               variant={"ghost"}
@@ -185,23 +197,47 @@ function App() {
           </header>
           <Divider p={0} m={0} />
           <SkeletonText isLoaded={!loading}>
-            <div className="flex-col space-y-4 px-8 py-10">
+            <div className="flex-col space-y-4 px-8 py-8">
               {window.location.pathname == "/" && (
                 <>
                   <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
-                    <Stat bgColor={"white"} borderRadius={"12px"} pt={5} pl={4}>
+                    <Stat
+                      boxShadow={"md"}
+                      bgColor={"white"}
+                      borderRadius={"12px"}
+                      pt={5}
+                      pl={4}
+                    >
                       <StatLabel>Questions Collected</StatLabel>
                       <StatNumber>{allQuestions.length}</StatNumber>
                     </Stat>
-                    <Stat bgColor={"white"} borderRadius={"12px"} pt={5} pl={4}>
+                    <Stat
+                      boxShadow={"md"}
+                      bgColor={"white"}
+                      borderRadius={"12px"}
+                      pt={5}
+                      pl={4}
+                    >
                       <StatLabel>Unanswered Questions</StatLabel>
                       <StatNumber> {Unanswered} </StatNumber>
                     </Stat>
-                    <Stat bgColor={"white"} borderRadius={"12px"} py={5} pl={4}>
+                    <Stat
+                      boxShadow={"md"}
+                      bgColor={"white"}
+                      borderRadius={"12px"}
+                      py={5}
+                      pl={4}
+                    >
                       <StatLabel>Average #Answers</StatLabel>
                       <StatNumber>{avgAnswers}</StatNumber>
                     </Stat>
-                    <Stat bgColor={"white"} borderRadius={"12px"} py={5} pl={4}>
+                    <Stat
+                      boxShadow={"md"}
+                      bgColor={"white"}
+                      borderRadius={"12px"}
+                      py={5}
+                      pl={4}
+                    >
                       <StatLabel>Maximum Answer Count</StatLabel>
                       <StatNumber>{maxAnswer.answerCount}</StatNumber>
                     </Stat>
@@ -292,8 +328,40 @@ function App() {
                     <div className="grid gap-4 grid-cols-1">
                       <div className="bg-white rounded-xl shadow-md  ">
                         <div className="w-full h-96 mt-8 ">
+                          <Center  className="m-auto self-center">
+                          <Menu>
+                            <span className=" font-extrabold text-xl mr-4">Top-15{" "} </span>
+                            <MenuButton
+                              as={Button}
+                              bgColor={'transparent'}
+                              rightIcon={<BsChevronDoubleDown />}
+                              className="bg-transparent text-orange-600"
+                            >
+                              {chooseCodeType}
+                            </MenuButton>
+                            <MenuList>
+                              <MenuItem
+                                onClick={() => {setChooseCodeType("Classes"); setCodeDataDisplay(codeData.classNames.slice(0,15))}}
+                              >
+                                Classes
+                              </MenuItem>
+                              <MenuItem
+                                onClick={() => {setChooseCodeType("Methods"); setCodeDataDisplay(codeData.methodNames.slice(0,15))}}
+                              >
+                                Methods
+                              </MenuItem>
+                              <MenuItem
+                             
+                                className=" text-yellow-500"
+                                onClick={() => {setChooseCodeType("Annotations"); setCodeDataDisplay(codeData.annotationNames.slice(0,15))}}
+                              >
+                                Annotations
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                          </Center>
                           <TopTenClasses
-                            data={codeData.classNames.slice(0, 15)}
+                            data={codeDataDisplay}
                           />
                         </div>
                       </div>

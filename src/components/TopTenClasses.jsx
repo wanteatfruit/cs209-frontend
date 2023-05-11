@@ -2,10 +2,7 @@ import { useEffect } from "react";
 import PropTypes from "prop-types";
 import * as echarts from "echarts";
 import { Radio, RadioGroup } from "@chakra-ui/react";
-export default function TopTenClasses({ data}) {
-
-
-
+export default function TopTenClasses({ data }) {
   const option = {
     tooltip: {
       trigger: "axis",
@@ -16,25 +13,25 @@ export default function TopTenClasses({ data}) {
         fontFamily: "Poppins",
       },
     },
-    title: {
-      text: "Top-15 Classes",
-      left: "center",
-      textStyle: {
-        fontFamily: "Poppins",
-      },
-    },
+    // title: {
+    //   text: "Top-15 Classes",
+    //   left: "center",
+    //   textStyle: {
+    //     fontFamily: "Poppins",
+    //   },
+    // },
     yAxis: {
       data: data.map((item) => item.name),
       axisLabel: {
         fontFamily: "Poppins",
-        fontSize:10,
-        rotate:30
+        fontSize: 10,
+        rotate: 30,
       },
-      type:'category',
-      minInterval: 0
+      type: "category",
+      minInterval: 0,
     },
     xAxis: {
-      type:'value',
+      type: "value",
       name: "Answer Count",
       axisLabel: {
         fontFamily: "Poppins",
@@ -47,12 +44,13 @@ export default function TopTenClasses({ data}) {
       {
         type: "bar",
         name: "Answer Count",
-        data: data.map((item) => {return item.value}),
-        itemStyle:{
-          color:'orange'
-        }
+        data: data.map((item) => {
+          return item.value;
+        }),
+        itemStyle: {
+          color: "orange",
+        },
       },
-      
     ],
   };
 
@@ -67,13 +65,7 @@ export default function TopTenClasses({ data}) {
   });
   return (
     <>
-
       <div id="top-ten" className="w-full h-full"></div>
-      <RadioGroup>
-      <Radio value="asda">
-        test
-      </Radio>
-    </RadioGroup>
     </>
   );
 }
