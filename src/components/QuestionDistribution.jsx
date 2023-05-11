@@ -24,12 +24,14 @@ export default function QuestionDistribution({ questions }) {
       },
     },
     visualMap: {
-      show: false,
-      type: "continuous",
-      seriesIndex: 1,
-      dimension: 0,
-      min: 0,
-      max: questions.length - 1,
+      orient: 'vertical',
+      show:false,
+      max:30,
+      dimension: 1,
+      inRange: {
+        color: ['#F2C94C', '#F2994A', '#FF5F6D']
+      },
+      
     },
     yAxis: {
       name: "Answer Count",

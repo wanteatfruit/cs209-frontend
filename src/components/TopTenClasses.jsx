@@ -13,18 +13,11 @@ export default function TopTenClasses({ data }) {
         fontFamily: "Poppins",
       },
     },
-    // title: {
-    //   text: "Top-15 Classes",
-    //   left: "center",
-    //   textStyle: {
-    //     fontFamily: "Poppins",
-    //   },
-    // },
     yAxis: {
       data: data.map((item) => item.name),
       axisLabel: {
         fontFamily: "Poppins",
-        fontSize: 10,
+        fontSize: 8,
         rotate: 30,
       },
       type: "category",
@@ -32,7 +25,6 @@ export default function TopTenClasses({ data }) {
     },
     xAxis: {
       type: "value",
-      name: "Answer Count",
       axisLabel: {
         fontFamily: "Poppins",
       },
@@ -40,10 +32,21 @@ export default function TopTenClasses({ data }) {
         fontFamily: "Poppins",
       },
     },
+    visualMap: {
+      orient: 'horizontal',
+      left: 'center',
+      min: 10,
+      max: 300,
+      show:false,
+      dimension: 0,
+      inRange: {
+        color: ['#F2C94C', '#F2994A', '#FF5F6D']
+      }
+    },
     series: [
       {
         type: "bar",
-        name: "Answer Count",
+        name: "Count",
         data: data.map((item) => {
           return item.value;
         }),
@@ -65,7 +68,7 @@ export default function TopTenClasses({ data }) {
   });
   return (
     <>
-      <div id="top-ten" className="w-full h-full"></div>
+      <div id="top-ten" className="w-full h-full mb-5 "></div>
     </>
   );
 }

@@ -49,7 +49,9 @@ function App() {
   const [tagCount, setTagCount] = useState([]);
   const [answerDistribution, setAnswerDistribution] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [codeDataDisplay, setCodeDataDisplay] = useState(codeData.classNames.slice(0, 15));
+  const [codeDataDisplay, setCodeDataDisplay] = useState(
+    codeData.classNames.slice(0, 15)
+  );
   const [chooseCodeType, setChooseCodeType] = useState("Classes");
   useEffect(() => {
     const getall = axios.get("http://localhost:9090/questions/getall");
@@ -327,42 +329,71 @@ function App() {
                   <div className="grid gap-4 grid-rows-3">
                     <div className="grid gap-4 grid-cols-1">
                       <div className="bg-white rounded-xl shadow-md  ">
-                        <div className="w-full h-96 mt-8 ">
-                          <Center  className="m-auto self-center">
-                          <Menu>
-                            <span className=" font-extrabold text-xl mr-4">Top-15{" "} </span>
-                            <MenuButton
-                              as={Button}
-                              bgColor={'transparent'}
-                              rightIcon={<BsChevronDoubleDown />}
-                              className="bg-transparent text-orange-600"
-                            >
-                              {chooseCodeType}
-                            </MenuButton>
-                            <MenuList>
-                              <MenuItem
-                                onClick={() => {setChooseCodeType("Classes"); setCodeDataDisplay(codeData.classNames.slice(0,15))}}
+                        <div className="w-full h-96 mt-8 px-4">
+                          <Center className="p-0 m-0">
+                            <Menu>
+                              <span className=" font-extrabold text-xl mr-4">
+                                Top-15{" "}
+                              </span>
+                              <MenuButton
+                                as={Button}
+                                bgColor={"transparent"}
+                                fontSize={"xl"}
+                                rightIcon={<BsChevronDoubleDown />}
+                                className="bg-transparent text-orange-600"
                               >
-                                Classes
-                              </MenuItem>
-                              <MenuItem
-                                onClick={() => {setChooseCodeType("Methods"); setCodeDataDisplay(codeData.methodNames.slice(0,15))}}
-                              >
-                                Methods
-                              </MenuItem>
-                              <MenuItem
-                             
-                                className=" text-yellow-500"
-                                onClick={() => {setChooseCodeType("Annotations"); setCodeDataDisplay(codeData.annotationNames.slice(0,15))}}
-                              >
-                                Annotations
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
+                                {chooseCodeType}
+                              </MenuButton>
+                              <MenuList>
+                                <MenuItem
+                                  as={Button}
+                                  _hover={{
+                                    textColor: "orange.400",
+                                    bgColor: "transparent",
+                                  }}
+                                  onClick={() => {
+                                    setChooseCodeType("Classes");
+                                    setCodeDataDisplay(
+                                      codeData.classNames.slice(0, 15)
+                                    );
+                                  }}
+                                >
+                                  Classes
+                                </MenuItem>
+                                <MenuItem
+                                  as={Button}
+                                  _hover={{
+                                    textColor: "blue.400",
+                                    bgColor: "transparent",
+                                  }}
+                                  onClick={() => {
+                                    setChooseCodeType("Methods");
+                                    setCodeDataDisplay(
+                                      codeData.methodNames.slice(0, 15)
+                                    );
+                                  }}
+                                >
+                                  Methods
+                                </MenuItem>
+                                <MenuItem
+                                  as={Button}
+                                  _hover={{
+                                    textColor: "yellow.600",
+                                    bgColor: "transparent",
+                                  }}
+                                  onClick={() => {
+                                    setChooseCodeType("Annotations");
+                                    setCodeDataDisplay(
+                                      codeData.annotationNames.slice(0, 15)
+                                    );
+                                  }}
+                                >
+                                  Annotations
+                                </MenuItem>
+                              </MenuList>
+                            </Menu>
                           </Center>
-                          <TopTenClasses
-                            data={codeDataDisplay}
-                          />
+                          <TopTenClasses data={codeDataDisplay} />
                         </div>
                       </div>
                     </div>

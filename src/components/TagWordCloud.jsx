@@ -29,8 +29,8 @@ export default function TagCloud({wordCloudData}){
                     color:function(){
                         //use Random orange color
                         return 'rgb(' + [
-                            Math.round(Math.random() * 200) + 100,
-                            Math.round(Math.random() * 50)+  20,
+                            Math.round(Math.random() * 100) + 200,
+                            Math.round(Math.random() * 100)+  30,
                             Math.round(Math.random() * 0) + 0
                         ].join(',') + ')';
                     }
