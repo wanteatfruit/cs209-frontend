@@ -21,9 +21,12 @@ import QuestionTable from "./components/QuestionTable";
 import ResolutionTime from "./components/ResolutionTime";
 import TopTenClasses from "./components/TopTenClasses";
 import { codeData } from "./assets/codeData";
-import  { parseAllTree,parseThreeLevelTree } from "./assets/parseTree";
+import { parseAllTree, parseThreeLevelTree } from "./assets/parseTree";
 import ImportSunBlast from "./components/ImportSunblast";
 import ImportTreeMap from "./components/ImportTreeMap";
+import TopTenAnnotations from "./components/TopTenAnnotations";
+import hljs from "highlight.js";
+import Highlight from "react-highlight";
 const CARDBG = "bg-white rounded-lg py-4 pr-8";
 const SELECTED = " bg-orange-400 w-5/6 text-white p-3 rounded-md";
 const UNSELECTED = "text-white p-3 rounded-md w-5/6 hover:bg-gray-600";
@@ -87,17 +90,15 @@ function App() {
       )
       .catch((err) => console.log(err));
 
+
   }, []);
   return (
     <>
-      <div className="app font-sans bg-slate-50 ">
+      <head></head>
+
+      <div className="grid grid-cols-10 w-full m-auto  font-sans bg-slate-50 ">
         <div
-          className="side-menu"
-          style={{
-            backgroundColor: "#2d3748",
-            margin: "16px",
-            borderRadius: "10px",
-          }}
+          className=" m-4 col-span-2  bg-blue-900 rounded-2xl"
         >
           <div className=" px-10 py-8 flex justify-between">
             <Icon
@@ -164,7 +165,7 @@ function App() {
           </div>
         </div>
 
-        <div className="main" style={{ margin: "12px" }}>
+        <div className="main col-span-8" style={{ margin: "12px" }}>
           <header className="pb-4 p-4 pr-10 flex justify-between">
             <div>
               <h1>{window.location.pathname}</h1>
@@ -218,7 +219,7 @@ function App() {
               {window.location.pathname == "/question" && (
                 <div className="grid gap-4 grid-rows-3">
                   <div className="grid gap-4 grid-cols-1">
-                    <div className='bg-white rounded-xl shadow-md  '>
+                    <div className="bg-white rounded-xl shadow-md  ">
                       <div className="chart w-full h-96 mt-8" style={{}}>
                         <QuestionDistribution
                           questions={getAverageByDate(allQuestions)}
@@ -240,19 +241,25 @@ function App() {
                         <StatNumber>23 Minutes</StatNumber>
                         <StatHelpText>Have a meal and come back</StatHelpText>
                       </Stat>
-                      <a href='https://stackoverflow.com/questions/141284/the-difference-between-the-runnable-and-callable-interfaces-in-java' >
-                      <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
-                        <StatLabel>Fastest Resolution</StatLabel>
-                        <StatNumber>2 Minutes</StatNumber>
-                        <StatHelpText>The difference between the Runnable and Callable interfaces in Java?</StatHelpText>
-                      </Stat>
+                      <a href="https://stackoverflow.com/questions/141284/the-difference-between-the-runnable-and-callable-interfaces-in-java">
+                        <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
+                          <StatLabel>Fastest Resolution</StatLabel>
+                          <StatNumber>2 Minutes</StatNumber>
+                          <StatHelpText>
+                            The difference between the Runnable and Callable
+                            interfaces in Java?
+                          </StatHelpText>
+                        </Stat>
                       </a>
-                      <a href='https://stackoverflow.com/questions/4052840/most-efficient-way-to-make-the-first-character-of-a-string-lower-case' >
-                      <Stat className="bg-white rounded-lg shadow-md p-4 hover:bg-slate-100 transition-colors">
-                        <StatLabel>Slowest Resolution</StatLabel>
-                        <StatNumber>5 Years</StatNumber>
-                        <StatHelpText>Most efficient way to make the first character of a String lower case?</StatHelpText>
-                      </Stat>
+                      <a href="https://stackoverflow.com/questions/4052840/most-efficient-way-to-make-the-first-character-of-a-string-lower-case">
+                        <Stat className="bg-white rounded-lg shadow-md p-4 hover:bg-slate-100 transition-colors">
+                          <StatLabel>Slowest Resolution</StatLabel>
+                          <StatNumber>5 Years</StatNumber>
+                          <StatHelpText>
+                            Most efficient way to make the first character of a
+                            String lower case?
+                          </StatHelpText>
+                        </Stat>
                       </a>
                     </div>
                   </div>
@@ -282,35 +289,48 @@ function App() {
               {window.location.pathname == "/code" && (
                 <SkeletonText isLoaded={!loading}>
                   <div className="grid gap-4 grid-rows-3">
-                  <div className="grid gap-4 grid-cols-1">
-                    <div className="bg-white rounded-lg py-6">
-                      <div className="w-full h-96">
-                        {/* <TopTenClasses
-                          data={classNames.slice(0, 10)}
-                          annotation={annotationNames.slice(0, 10)}
-                          method={methodNames.slice(0, 10)}
-                        /> */}
-                        <ImportTreeMap importData={parseAllTree(codeData.importNames)}/>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="grid gap-4 grid-cols-3">
-                    <div className="bg-white rounded-lg py-6 col-span-2">
-                      <div className="w-full h-96">
-                        <ImportSunBlast importData={parseThreeLevelTree(codeData.importNames)} />
-                      </div>
-                    </div>
-                    <div className="col-span-1 bg-white p-6 rounded-lg">
-                      <div className=" text-center font-bold text-xl">Most Frequently Used Method</div>
-                      <div className="grid grid-rows-5 grid-cols-2 gap-4">
-                      {codeData.methodNames.slice(0,10).map((item)=>(
-                        <div  key={item.name}>
-                        <code>{item.name}</code>
+                    <div className="grid gap-4 grid-cols-1">
+                      <div className="bg-white rounded-xl shadow-md  ">
+                        <div className="w-full h-96 mt-8 ">
+                          <TopTenClasses
+                            data={codeData.classNames.slice(0, 15)}
+                          />
                         </div>
-                      ))}
                       </div>
                     </div>
-                  </div>
+                    <div className="grid gap-4 grid-cols-1">
+                      <div className="bg-white rounded-lg py-6">
+                        <div className="w-full h-96">
+                          <ImportTreeMap
+                            importData={parseAllTree(codeData.importNames)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid gap-4 grid-cols-3">
+                      <div className="bg-white rounded-lg py-6 col-span-2">
+                        <div className="w-full h-96">
+                          <ImportSunBlast
+                            importData={parseThreeLevelTree(
+                              codeData.importNames
+                            )}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-span-1 bg-white p-6 rounded-lg">
+                        <div className=" text-center font-bold text-xl">
+                          Most Frequently Used Method
+                        </div>
+                        <div className="code">
+                          {codeData.methodNames.slice(0, 10).map((item) => (
+                            <code key={item.name}>
+                              {item.name + "()"}
+                              <br></br>
+                            </code>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </SkeletonText>
               )}
@@ -342,7 +362,7 @@ function parseResolution(data) {
     total += diff;
     if (diff <= 1) {
       resolutionTime[0].count++;
-      if(minuteDiff < shortest && minuteDiff!=0){
+      if (minuteDiff < shortest && minuteDiff != 0) {
         shortest = minuteDiff;
       }
     } else if (diff <= 7) {
@@ -353,7 +373,7 @@ function parseResolution(data) {
       resolutionTime[3].count++;
     } else {
       resolutionTime[4].count++;
-      if(yearDiff > longest){
+      if (yearDiff > longest) {
         longest = yearDiff;
       }
     }

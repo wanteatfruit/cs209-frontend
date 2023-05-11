@@ -14,10 +14,10 @@ export default function ImportTreeMap({ importData }) {
       {
         type: "treemap",
         name: "import",
-        radius: [0, '95%'],
+        visibleMin:300,
         data: importData,
         itemStyle:{
-          color:'orange'
+          borderColor:'#fff',
         },
         label:{
           textStyle:{

@@ -20,8 +20,10 @@
     "echarts": "^5.4.2",
     "echarts-wordcloud": "^2.1.0",
     "framer-motion": "^10.12.7",
+    "highlight.js": "^11.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-highlight": "^0.15.0",
     "react-icons": "^4.8.0"
   },
   "devDependencies": {
