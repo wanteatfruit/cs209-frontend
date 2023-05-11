@@ -3,6 +3,7 @@ import "./App.css";
 import {
   BsArrowDown,
   BsArrowUp,
+  BsBoxArrowInUp,
   BsChevronDoubleDown,
   BsGithub,
   BsImages,
@@ -10,12 +11,10 @@ import {
   BsQuestionCircle,
   BsQuestionCircleFill,
   BsStackOverflow,
-  BsStickiesFill,
-  BsUpc,
 } from "react-icons/bs";
+import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
 import { MdNumbers, MdQuestionAnswer } from "react-icons/md";
 import {
-  Avatar,
   Button,
   Center,
   Divider,
@@ -267,61 +266,85 @@ function App() {
                       <StatLabel>Average #Answers</StatLabel>
                       <StatNumber>{avgAnswers}</StatNumber>
                     </Stat>
-                    <div className=" col-span-2 bg-white shadow-md rounded-xl p-6">
-                      <p className="text-xl">
-                        How do I read / convert an InputStream into a String in
-                        Java?
-                      </p>
-                      <p className="text-slate-500 pb-2">
-                        Asked 14 years, 5 months ago.{"  "} Modified 15 days
-                        ago. Viewed 2.6m times.
-                      </p>
-                      <Divider />
-                      <p className="mt-4">
-                        If you have a{" "}
-                        <code style={{backgroundColor:'#f6f6f6'}}>
-                          java.io.InputStream
-                        </code>{" "}
-                        object, how should you process that object and produce a
-                        String?
-                      </p>
-                      <p className="pb-4">
-                        Suppose I have an{" "}
-                        <code style={{backgroundColor:'#f6f6f6'}}>InputStream</code> that
-                        contains text data, and I want to convert it to a
-                        String, so for example I can write that to a log file.
-                        What is the easiest way to take the{" "}
-                        <code style={{backgroundColor:'#f6f6f6'}}>InputStream</code> and
-                        convert it to a String?
-                      </p>
-                      <Highlight className="java">
-                        {`public String convertStreamToString(InputStream is){
+
+                    <div className="hover:bg-slate-100 transition-all col-span-2 bg-white shadow-md rounded-xl p-6">
+                      <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://stackoverflow.com/questions/309424/how-do-i-read-convert-an-inputstream-into-a-string-in-java"
+                        className=""
+                      >
+                        <p className="text-xl">
+                          How do I read / convert an InputStream into a String
+                          in Java?
+                        </p>
+                        <p className="text-slate-500 pb-2">
+                          Asked 14 years, 5 months ago.{"  "} Modified 15 days
+                          ago. Viewed 2.6m times.
+                        </p>
+                        <Divider />
+                        <section className="grid grid-cols-10">
+                          <div className="col-span-1 flex flex-col mt-2">
+                            <Icon
+                              className="fill-slate-400 text-5xl"
+                              as={VscTriangleUp}
+                            ></Icon>
+                            <p className="text-xl">4639</p>
+                            <Icon
+                              className="fill-slate-400 text-5xl"
+                              as={VscTriangleDown}
+                            ></Icon>
+                          </div>
+                          <div className="col-span-9">
+                            <p className="mt-4">
+                              If you have a{" "}
+                              <code style={{ backgroundColor: "#f6f6f6" }}>
+                                java.io.InputStream
+                              </code>{" "}
+                              object, how should you process that object and
+                              produce a String?
+                            </p>
+                            <p className="pb-4">
+                              Suppose I have an{" "}
+                              <code style={{ backgroundColor: "#f6f6f6" }}>
+                                InputStream
+                              </code>{" "}
+                              that contains text data, and I want to convert it
+                              to a String, so for example I can write that to a
+                              log file.<br></br>
+                              <br></br>
+                              What is the easiest way to take the{" "}
+                              <code style={{ backgroundColor: "#f6f6f6" }}>
+                                InputStream
+                              </code>{" "}
+                              and convert it to a String?
+                            </p>
+                            <Highlight className="java">
+                              {`public String convertStreamToString(InputStream is){
 // ???
 }`}
-                      </Highlight>
-                      <p className="text-xl mt-10">
-                        Received{" "}
-                        <span className="underline decoration-dotted text-2xl text-orange-500 font-bold ">
-                          64
-                        </span>{" "}
-                        Answers
-                      </p>
+                            </Highlight>
+                          </div>
+                        </section>
+                        <p className="text-xl mt-6">
+                          <span className="underline decoration-dotted text-2xl text-orange-500 font-bold ">
+                            64
+                          </span>{" "}
+                          Answers
+                        </p>
+                      </a>
                     </div>
                     <div className="grid grid-rows-2 gap-8">
-                    <div className=" bg-white shadow-md rounded-xl p-4">
-                      <p>
-                        How to print 1234 from &quot;onetwothreefour&quot; using
-                        Java
-                      </p>
+                      <div className=" bg-white shadow-md rounded-xl p-4">
+                        <p className="text-xl">
+                          How to print 1234 from &quot;onetwothreefour&quot;
+                          using Java
+                        </p>
+                      </div>
+                      <div className=" bg-white shadow-md rounded-xl p-4">
+                        <p>How do I convert a String to an int in Java?</p>
+                      </div>
                     </div>
-                    <div className=" bg-white shadow-md rounded-xl p-4">
-                      <p>
-                      How do I convert a String to an int in Java?
-
-                      </p>
-                    </div>
-                    </div>
-                    
                   </div>
 
                   <div className="grid gap-4 grid-cols-2">
