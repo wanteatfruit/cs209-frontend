@@ -1,12 +1,21 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import {
+  BsArrowDown,
+  BsArrowUp,
   BsChevronDoubleDown,
   BsGithub,
   BsImages,
+  BsInbox,
+  BsQuestionCircle,
+  BsQuestionCircleFill,
   BsStackOverflow,
+  BsStickiesFill,
+  BsUpc,
 } from "react-icons/bs";
+import { MdNumbers, MdQuestionAnswer } from "react-icons/md";
 import {
+  Avatar,
   Button,
   Center,
   Divider,
@@ -35,8 +44,10 @@ import { codeData } from "./assets/codeData";
 import { parseAllTree, parseThreeLevelTree } from "./assets/parseTree";
 import ImportSunBlast from "./components/ImportSunblast";
 import ImportTreeMap from "./components/ImportTreeMap";
+import Highlight from "react-highlight";
 const CARDBG = "bg-white rounded-lg py-4 pr-8";
-const SELECTED = " bg-orange-400 w-5/6 text-white  p-3 rounded-md";
+const SELECTED =
+  " to-orange-300 bg-gradient-to-tr from-orange-500 w-5/6 text-white  p-3 rounded-md";
 const UNSELECTED =
   "text-white p-3 rounded-md w-5/6 hover:bg-gray-600 hover:translate-x-2 transition";
 function App() {
@@ -104,17 +115,20 @@ function App() {
   }, []);
   return (
     <>
-      <head></head>
-
+      <link
+        rel="stylesheet"
+        href="node_modules/highlight.js/styles/stackoverflow-light.css"
+      ></link>
       <div className="grid grid-cols-10 w-full m-auto min-h-screen  font-sans bg-slate-50 ">
         <div className=" m-4 col-span-2 bg-sky-950 rounded-2xl">
           <div className=" px-10 py-8 flex justify-between">
             <Icon
-              mt={1}
+              mt={1.5}
+              mr={2}
               as={BsStackOverflow}
               w={10}
               h={10}
-              color="orange.300"
+              color="orange.400"
             />
             <div>
               <p className="text-white text-lg font-semibold ">StackOverflow</p>
@@ -179,7 +193,7 @@ function App() {
         <div className="main col-span-8" style={{ margin: "12px" }}>
           <header className="pb-4 p-4 pr-10 flex justify-between">
             <div>
-              <h1 className=" text-5xl font-bold font bg-gradient-to-r bg-clip-text text-transparent from-orange-600 to-orange-400">
+              <h1 className=" text-5xl font-bold font bg-gradient-to-r bg-clip-text text-transparent from-orange-500 to-orange-300">
                 Data Visualization
               </h1>
               {/* <p className=" text-orange-600">
@@ -202,7 +216,7 @@ function App() {
             <div className="flex-col space-y-4 px-8 py-8">
               {window.location.pathname == "/" && (
                 <>
-                  <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
+                  <div className="grid gap-8 grid-cols-3 md:grid-cols-3">
                     <Stat
                       boxShadow={"md"}
                       bgColor={"white"}
@@ -210,7 +224,15 @@ function App() {
                       pt={5}
                       pl={4}
                     >
-                      <StatLabel>Questions Collected</StatLabel>
+                      <div className=" absolute -top-2 right-4 p-4 bg-orange-400 rounded-md shadow-md">
+                        <Icon
+                          as={MdQuestionAnswer}
+                          className=" text-2xl stroke-white fill-white"
+                        ></Icon>
+                      </div>
+                      <StatLabel className="flex flex-row">
+                        <p>Questions Collected</p>
+                      </StatLabel>
                       <StatNumber>{allQuestions.length}</StatNumber>
                     </Stat>
                     <Stat
@@ -220,6 +242,12 @@ function App() {
                       pt={5}
                       pl={4}
                     >
+                      <div className=" absolute -top-2 right-4 p-4 bg-cyan-500 rounded-md shadow-md">
+                        <Icon
+                          as={BsQuestionCircleFill}
+                          className=" text-2xl stroke-white fill-white"
+                        ></Icon>
+                      </div>
                       <StatLabel>Unanswered Questions</StatLabel>
                       <StatNumber> {Unanswered} </StatNumber>
                     </Stat>
@@ -230,19 +258,70 @@ function App() {
                       py={5}
                       pl={4}
                     >
+                      <div className=" absolute -top-2 right-4 p-4 bg-sky-800 rounded-md shadow-md">
+                        <Icon
+                          as={MdNumbers}
+                          className=" text-2xl stroke-white fill-white"
+                        ></Icon>
+                      </div>
                       <StatLabel>Average #Answers</StatLabel>
                       <StatNumber>{avgAnswers}</StatNumber>
                     </Stat>
-                    <Stat
-                      boxShadow={"md"}
-                      bgColor={"white"}
-                      borderRadius={"12px"}
-                      py={5}
-                      pl={4}
-                    >
-                      <StatLabel>Maximum Answer Count</StatLabel>
-                      <StatNumber>{maxAnswer.answerCount}</StatNumber>
-                    </Stat>
+                    <div className=" col-span-2 bg-white shadow-md rounded-xl p-6">
+                      <p className="text-xl">
+                        How do I read / convert an InputStream into a String in
+                        Java?
+                      </p>
+                      <p className="text-slate-500 pb-2">
+                        Asked 14 years, 5 months ago.{"  "} Modified 15 days
+                        ago. Viewed 2.6m times.
+                      </p>
+                      <Divider />
+                      <p className="mt-4">
+                        If you have a{" "}
+                        <code style={{backgroundColor:'#f6f6f6'}}>
+                          java.io.InputStream
+                        </code>{" "}
+                        object, how should you process that object and produce a
+                        String?
+                      </p>
+                      <p className="pb-4">
+                        Suppose I have an{" "}
+                        <code style={{backgroundColor:'#f6f6f6'}}>InputStream</code> that
+                        contains text data, and I want to convert it to a
+                        String, so for example I can write that to a log file.
+                        What is the easiest way to take the{" "}
+                        <code style={{backgroundColor:'#f6f6f6'}}>InputStream</code> and
+                        convert it to a String?
+                      </p>
+                      <Highlight className="java">
+                        {`public String convertStreamToString(InputStream is){
+// ???
+}`}
+                      </Highlight>
+                      <p className="text-xl mt-10">
+                        Received{" "}
+                        <span className="underline decoration-dotted text-2xl text-orange-500 font-bold ">
+                          64
+                        </span>{" "}
+                        Answers
+                      </p>
+                    </div>
+                    <div className="grid grid-rows-2 gap-8">
+                    <div className=" bg-white shadow-md rounded-xl p-4">
+                      <p>
+                        How to print 1234 from &quot;onetwothreefour&quot; using
+                        Java
+                      </p>
+                    </div>
+                    <div className=" bg-white shadow-md rounded-xl p-4">
+                      <p>
+                      How do I convert a String to an int in Java?
+
+                      </p>
+                    </div>
+                    </div>
+                    
                   </div>
 
                   <div className="grid gap-4 grid-cols-2">

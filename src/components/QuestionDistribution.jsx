@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 import * as echarts from "echarts";
+import dayjs from "dayjs";
 export default function QuestionDistribution({ questions }) {
   const option = {
     tooltip: {},
@@ -45,11 +46,12 @@ export default function QuestionDistribution({ questions }) {
     series: [
       {
         type: "line",
-        name: "Answer Count",
+        name: "Average Answer Count",
         data: Object.values(questions),
         itemStyle:{
           color:'orange'
-        }
+        },
+        selectedMode:'single',
       },
     
     ],

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 import * as echarts from "echarts";
-import { Radio, RadioGroup } from "@chakra-ui/react";
 export default function TopTenClasses({ data }) {
   const option = {
     tooltip: {
