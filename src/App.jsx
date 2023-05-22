@@ -248,8 +248,8 @@ function App() {
                           className=" text-2xl stroke-white fill-white"
                         ></Icon>
                       </div>
-                      <StatLabel>Unanswered Questions</StatLabel>
-                      <StatNumber> {Unanswered} </StatNumber>
+                      <StatLabel>Unanswered Question Percent</StatLabel>
+                      <StatNumber> {'38.7%'} </StatNumber>
                     </Stat>
                     <Stat
                       boxShadow={"md"}
@@ -328,29 +328,16 @@ function App() {
                           </div>
                         </section>
                         <p className="text-xl mt-6">
+                          Has the most number of answers:{" "}
                           <span className="underline decoration-dotted text-2xl text-orange-500 font-bold ">
                             64
                           </span>{" "}
-                          Answers
                         </p>
                       </a>
                     </div>
-                    <div className="grid grid-rows-2 gap-8">
-                      <div className=" bg-white shadow-md rounded-xl p-4">
-                        <p className="text-xl">
-                          How to print 1234 from &quot;onetwothreefour&quot;
-                          using Java
-                        </p>
-                      </div>
-                      <div className=" bg-white shadow-md rounded-xl p-4">
-                        <p>How do I convert a String to an int in Java?</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid gap-4 grid-cols-2">
-                    <div className={CARDBG}>
-                      <div className="w-full h-96">
+                    <div className='bg-white rounded-lg shadow-md pt-6  pr-8'>
+                    <p className="ml-4 text-md font-bold">Frequently Appearing Tags</p>
+                      <div className="w-full ml-4 mt-4 h-96">
                         <TagCloud wordCloudData={tagCount} />
                       </div>
                     </div>
