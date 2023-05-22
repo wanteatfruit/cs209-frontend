@@ -62,6 +62,7 @@ function App() {
   const [codeDataDisplay, setCodeDataDisplay] = useState(
     codeData.classNames.slice(0, 15)
   );
+  // const [nonAccepted, setNonAccepted] = useState(0);
   const [chooseCodeType, setChooseCodeType] = useState("Classes");
   useEffect(() => {
     const getall = axios.get("http://localhost:9090/questions/getall");
@@ -420,8 +421,33 @@ function App() {
                     </div>
                   </div>
                   <div className="grid gap-4 grid-cols-3 ">
-                    <div className="bg-white rounded-lg py-6 col-span-2">
-                      <div className="w-full h-96"></div>
+                    <div className=" py-6 col-span-1">
+                      <div className="w-full h-20">
+                        <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
+                          <StatLabel>Total Accepted Answers</StatLabel>
+                          <StatNumber>499</StatNumber>
+                        </Stat>
+                      </div>
+                    </div>
+                    <div className=" py-6 col-span-1">
+                      <div className="w-full h-20">
+                        <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
+                          <StatLabel>Total Collected Answers</StatLabel>
+                          <StatNumber>1432</StatNumber>
+                        </Stat>
+                      </div>
+                    </div>
+
+                    <div className=" py-6 col-span-1">
+                      <div className="w-full h-20">
+                        <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
+                          <StatLabel>
+                            Non-accepted answer with higher
+                            upvotes
+                          </StatLabel>
+                          <StatNumber>2.61%</StatNumber>
+                        </Stat>
+                      </div>
                     </div>
                   </div>
                 </>
