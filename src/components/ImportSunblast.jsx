@@ -5,7 +5,7 @@ export default function ImportSunBlast({ importData }) {
   const option = {
     tooltip: {},
     title: {
-      text: "Import Hierarchical Sunburst",
+      // text: "Import Hierarchical Sunburst",
       left: "center",
       textStyle: {
         fontFamily: "Poppins",

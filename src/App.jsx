@@ -535,7 +535,7 @@ function App() {
                         <div className=" text-center font-bold text-xl">
                           Most Frequently Used Method
                         </div>
-                        <div className="code">
+                        <div className="code pt-10">
                           {codeData.methodNames.slice(0, 10).map((item) => (
                             <code key={item.name}>
                               {item.name + "()"}
