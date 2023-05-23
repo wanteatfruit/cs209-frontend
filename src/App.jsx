@@ -13,7 +13,11 @@ import {
   BsStackOverflow,
 } from "react-icons/bs";
 import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
-import { MdNumbers, MdQuestionAnswer,MdThumbUp,MdRemoveRedEye
+import {
+  MdNumbers,
+  MdQuestionAnswer,
+  MdThumbUp,
+  MdRemoveRedEye,
 } from "react-icons/md";
 import {
   Button,
@@ -68,7 +72,7 @@ function App() {
   const [answerDistribution, setAnswerDistribution] = useState([]);
   const [loading, setLoading] = useState(true);
   const [codeDataDisplay, setCodeDataDisplay] = useState(
-    codeData.classNames.slice(0, 15)
+    codeData.classNames.slice(1, 16)
   );
   // const [nonAccepted, setNonAccepted] = useState(0);
   const [chooseCodeType, setChooseCodeType] = useState("Classes");
@@ -90,10 +94,16 @@ function App() {
       "http://localhost:9090/questions/get-accepted-questions"
     );
     const gettagcount = axios.get("http://localhost:9090/tags/count");
-    const gettopupvotes = axios.get("http://localhost:9090/tags/get-top-upvotes");
+    const gettopupvotes = axios.get(
+      "http://localhost:9090/tags/get-top-upvotes"
+    );
     const gettopview = axios.get("http://localhost:9090/tags/get-top-view");
-    const getansweruserdis = axios.get("http://localhost:9090/answers/get-user-dist");
-    const getcommentuserdis = axios.get("http://localhost:9090/comments/get-user-dist");
+    const getansweruserdis = axios.get(
+      "http://localhost:9090/answers/get-user-dist"
+    );
+    const getcommentuserdis = axios.get(
+      "http://localhost:9090/comments/get-user-dist"
+    );
     const getusercount = axios.get("http://localhost:9090/users/count-user");
 
     const getresolution = axios.get(
@@ -181,33 +191,34 @@ function App() {
                 Overview
               </a>
             )}
-            {window.location.pathname == "/question" ? (
-              <a href="/question" className={SELECTED}>
-                Question
-              </a>
-            ) : (
-              <a href="/question" className={UNSELECTED}>
-                Question
-              </a>
-            )}
-            {window.location.pathname == "/answer" ? (
-              <a href="/answer" className={SELECTED}>
+            {window.location.pathname == "/answers" ? (
+              <a href="/answers" className={SELECTED}>
                 Answers
               </a>
             ) : (
-              <a href="/answer" className={UNSELECTED}>
+              <a href="/answers" className={UNSELECTED}>
                 Answers
               </a>
             )}
-              {window.location.pathname == "/user" ? (
-                  <a href="/user" className={SELECTED}>
-                      User
-                  </a>
-              ) : (
-                  <a href="/user" className={UNSELECTED}>
-                      User
-                  </a>
-              )}
+
+            {window.location.pathname == "/tags" ? (
+              <a href="/tags" className={SELECTED}>
+                Tags
+              </a>
+            ) : (
+              <a href="/tags" className={UNSELECTED}>
+                Tags
+              </a>
+            )}
+            {window.location.pathname == "/user" ? (
+              <a href="/user" className={SELECTED}>
+                Users
+              </a>
+            ) : (
+              <a href="/user" className={UNSELECTED}>
+                Users
+              </a>
+            )}
             {window.location.pathname == "/code" ? (
               <a
                 href="/code"
@@ -229,11 +240,11 @@ function App() {
               <h1 className=" text-5xl font-bold font bg-gradient-to-r bg-clip-text text-transparent from-orange-500 to-orange-300">
                 Data Visualization
               </h1>
-              {/* <p className=" text-orange-600">
+              <p>
                 {"Data range: "}
                 {dayjs.unix(1221225856).format("YYYY/MM/DD")} -{" "}
                 {dayjs.unix(1682602397).format("YYYY/MM/DD")}
-              </p> */}
+              </p>
             </div>
             <IconButton
               variant={"ghost"}
@@ -282,7 +293,7 @@ function App() {
                         ></Icon>
                       </div>
                       <StatLabel>Unanswered Question Percent</StatLabel>
-                      <StatNumber> {'38.7%'} </StatNumber>
+                      <StatNumber> {"38.7%"} </StatNumber>
                     </Stat>
                     <Stat
                       boxShadow={"md"}
@@ -300,40 +311,40 @@ function App() {
                       <StatLabel>Average #Answers</StatLabel>
                       <StatNumber>{avgAnswers}</StatNumber>
                     </Stat>
-                      <Stat
-                          boxShadow={"md"}
-                          bgColor={"white"}
-                          borderRadius={"12px"}
-                          py={5}
-                          pl={4}
-                      >
-                          <div className=" absolute -top-2 right-2 p-4 bg-sky-800 rounded-md shadow-md">
-                              <Icon
-                                  as={MdThumbUp}
-                                  className=" text-2xl stroke-white fill-white"
-                              ></Icon>
-                          </div>
-                          <StatLabel>Most Upvotes Tags Combination</StatLabel>
-                          <StatNumber>{topUpvote[0]}</StatNumber>
-                          <StatNumber>{topUpvote[1]}</StatNumber>
-                      </Stat>
-                      <Stat
-                          boxShadow={"md"}
-                          bgColor={"white"}
-                          borderRadius={"12px"}
-                          py={5}
-                          pl={4}
-                      >
-                          <div className=" absolute -top-2 right-2 p-4 bg-sky-800 rounded-md shadow-md">
-                              <Icon
-                                  as={MdRemoveRedEye}
-                                  className=" text-2xl stroke-white fill-white"
-                              ></Icon>
-                          </div>
-                          <StatLabel>Most Views Tags Combination</StatLabel>
-                          <StatNumber>{topView[0]}</StatNumber>
-                          <StatNumber>{topView[1]}</StatNumber>
-                      </Stat>
+                    {/* <Stat
+                      boxShadow={"md"}
+                      bgColor={"white"}
+                      borderRadius={"12px"}
+                      py={5}
+                      pl={4}
+                    >
+                      <div className=" absolute -top-2 right-2 p-4 bg-sky-800 rounded-md shadow-md">
+                        <Icon
+                          as={MdThumbUp}
+                          className=" text-2xl stroke-white fill-white"
+                        ></Icon>
+                      </div>
+                      <StatLabel>Most Upvotes Tags Combination</StatLabel>
+                      <StatNumber>{topUpvote[0]}</StatNumber>
+                      <StatNumber>{topUpvote[1]}</StatNumber>
+                    </Stat>
+                    <Stat
+                      boxShadow={"md"}
+                      bgColor={"white"}
+                      borderRadius={"12px"}
+                      py={5}
+                      pl={4}
+                    >
+                      <div className=" absolute -top-2 right-2 p-4 bg-sky-800 rounded-md shadow-md">
+                        <Icon
+                          as={MdRemoveRedEye}
+                          className=" text-2xl stroke-white fill-white"
+                        ></Icon>
+                      </div>
+                      <StatLabel>Most Views Tags Combination</StatLabel>
+                      <StatNumber>{topView[0]}</StatNumber>
+                      <StatNumber>{topView[1]}</StatNumber>
+                    </Stat> */}
 
                     <div className="hover:bg-slate-100 transition-all col-span-2 bg-white shadow-md rounded-xl p-6">
                       <a
@@ -402,8 +413,10 @@ function App() {
                         </p>
                       </a>
                     </div>
-                    <div className='bg-white rounded-lg shadow-md pt-6  pr-8'>
-                    <p className="ml-4 text-md font-bold">Frequently Appearing Tags</p>
+                    <div className="bg-white rounded-lg shadow-md pt-6  pr-8">
+                      <p className="ml-4 text-md font-bold">
+                        Frequently Appearing Tags
+                      </p>
                       <div className="w-full ml-4 mt-4 h-96">
                         <TagCloud wordCloudData={tagCount} />
                       </div>
@@ -411,77 +424,297 @@ function App() {
                   </div>
                 </>
               )}
-              {window.location.pathname == "/question" && (
-                <div className="grid gap-4 grid-rows-3">
-                  <div className="grid gap-4 grid-cols-1">
-                    <div className="bg-white rounded-xl shadow-md  ">
-                      <div className="chart w-full h-96 mt-8" style={{}}>
-                        <QuestionDistribution
-                          questions={getAverageByDate(allQuestions)}
-                        />
+              {window.location.pathname == "/answers" && (
+                <>
+                  <div className="grid gap-8 grid-cols-3 md:grid-cols-3">
+                    <Stat
+                      boxShadow={"md"}
+                      bgColor={"white"}
+                      borderRadius={"12px"}
+                      pt={5}
+                      pl={4}
+                    >
+                      <div className=" absolute -top-2 right-4 p-4 bg-orange-400 rounded-md shadow-md">
+                        <Icon
+                          as={MdQuestionAnswer}
+                          className=" text-2xl stroke-white fill-white"
+                        ></Icon>
+                      </div>
+                      <StatLabel className="flex flex-row">
+                        <p>Questions Collected</p>
+                      </StatLabel>
+                      <StatNumber>{allQuestions.length}</StatNumber>
+                    </Stat>
+                    <Stat
+                      boxShadow={"md"}
+                      bgColor={"white"}
+                      borderRadius={"12px"}
+                      pt={5}
+                      pl={4}
+                    >
+                      <div className=" absolute -top-2 right-4 p-4 bg-cyan-500 rounded-md shadow-md">
+                        <Icon
+                          as={BsQuestionCircleFill}
+                          className=" text-2xl stroke-white fill-white"
+                        ></Icon>
+                      </div>
+                      <StatLabel>Unanswered Question Percent</StatLabel>
+                      <StatNumber> {"38.7%"} </StatNumber>
+                    </Stat>
+                    <Stat
+                      boxShadow={"md"}
+                      bgColor={"white"}
+                      borderRadius={"12px"}
+                      py={5}
+                      pl={4}
+                    >
+                      <div className=" absolute -top-2 right-4 p-4 bg-sky-800 rounded-md shadow-md">
+                        <Icon
+                          as={MdNumbers}
+                          className=" text-2xl stroke-white fill-white"
+                        ></Icon>
+                      </div>
+                      <StatLabel>Average #Answers</StatLabel>
+                      <StatNumber>{avgAnswers}</StatNumber>
+                    </Stat>
+                  </div>
+                  <div className="hover:bg-slate-100 transition-all col-span-2 bg-white shadow-md rounded-xl p-6">
+                    <a target="_blank" rel="noreferrer" className="">
+                      <p className="text-xl">
+                        How do I read / convert an InputStream into a String in
+                        Java?
+                      </p>
+                      <p className="text-slate-500 pb-2">
+                        Asked 14 years, 5 months ago.{"  "} Modified 15 days
+                        ago. Viewed 2.6m times.
+                      </p>
+                      <Divider />
+                      <section className="grid grid-cols-10">
+                        <div className="col-span-1 flex flex-col mt-2">
+                          <Icon
+                            className="fill-slate-400 text-5xl"
+                            as={VscTriangleUp}
+                          ></Icon>
+                          <p className="text-xl">4639</p>
+                          <Icon
+                            className="fill-slate-400 text-5xl"
+                            as={VscTriangleDown}
+                          ></Icon>
+                        </div>
+                        <div className="col-span-9">
+                          <p className="mt-4">
+                            If you have a{" "}
+                            <code style={{ backgroundColor: "#f6f6f6" }}>
+                              java.io.InputStream
+                            </code>{" "}
+                            object, how should you process that object and
+                            produce a String?
+                          </p>
+                          <p className="pb-4">
+                            Suppose I have an{" "}
+                            <code style={{ backgroundColor: "#f6f6f6" }}>
+                              InputStream
+                            </code>{" "}
+                            that contains text data, and I want to convert it to
+                            a String, so for example I can write that to a log
+                            file.<br></br>
+                            <br></br>
+                            What is the easiest way to take the{" "}
+                            <code style={{ backgroundColor: "#f6f6f6" }}>
+                              InputStream
+                            </code>{" "}
+                            and convert it to a String?
+                          </p>
+                          <Highlight className="java">
+                            {`public String convertStreamToString(InputStream is){
+// ???
+}`}
+                          </Highlight>
+                        </div>
+                      </section>
+                      <p className="text-xl mt-6">
+                        Has the{" "}
+                        <span className="font-bold text-orange-500">most</span>{" "}
+                        number of answers:{" "}
+                        <span className="underline decoration-dotted text-2xl text-orange-500 font-bold ">
+                          64
+                        </span>{" "}
+                      </p>
+                    </a>
+                  </div>
+                  <div className="grid gap-4 grid-rows-3">
+                    <div className="grid gap-4 grid-cols-1">
+                      <div className="bg-white rounded-xl shadow-md  ">
+                        <div className="chart w-full h-96 mt-8" style={{}}>
+                          <QuestionDistribution
+                            questions={getAverageByDate(allQuestions)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid gap-4 grid-cols-2">
+                      <div className="bg-white shadow-md rounded-lg py-6">
+                        <div className="w-full h-96">
+                          <AcceptedAnswerPie />
+                        </div>
+                      </div>
+                      <div className="bg-white shadow-md rounded-lg py-6">
+                        <div className="w-full h-96">
+                          <AnswerCountPie data={answerDistribution} />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 grid-cols-3">
+                      <div className="bg-white rounded-xl col-span-2 shadow-md">
+                        <div className="w-full h-96 mt-8">
+                          <ResolutionTime
+                            data={parseResolution(resolutionTimes)}
+                          />
+                        </div>
+                      </div>
+                      <div className="grid gap-3 grid-rows-3">
+                        <Stat className="bg-white rounded-lg shadow-md p-4 pt-6">
+                          <StatLabel>Average Resolution Time</StatLabel>
+                          <StatNumber>23 Minutes</StatNumber>
+                          <StatHelpText>Have a meal and come back</StatHelpText>
+                        </Stat>
+                        <a href="https://stackoverflow.com/questions/141284/the-difference-between-the-runnable-and-callable-interfaces-in-java">
+                          <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
+                            <StatLabel>Fastest Resolution</StatLabel>
+                            <StatNumber>2 Minutes</StatNumber>
+                            <StatHelpText>
+                              The difference between the Runnable and Callable
+                              interfaces in Java?
+                            </StatHelpText>
+                          </Stat>
+                        </a>
+                        <a href="https://stackoverflow.com/questions/4052840/most-efficient-way-to-make-the-first-character-of-a-string-lower-case">
+                          <Stat className="bg-white rounded-lg shadow-md p-4 hover:bg-slate-100 transition-colors">
+                            <StatLabel>Slowest Resolution</StatLabel>
+                            <StatNumber>5 Years</StatNumber>
+                            <StatHelpText>
+                              Most efficient way to make the first character of
+                              a String lower case?
+                            </StatHelpText>
+                          </Stat>
+                        </a>
+                      </div>
+                    </div>
+                    <div className="grid gap-4 grid-cols-3 ">
+                      <div className="  col-span-1">
+                        <div className="w-full h-20">
+                          <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
+                            <StatLabel>Total Accepted Answers</StatLabel>
+                            <StatNumber>499</StatNumber>
+                          </Stat>
+                        </div>
+                      </div>
+                      <div className="  col-span-1">
+                        <div className="w-full h-20">
+                          <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
+                            <StatLabel>Total Collected Answers</StatLabel>
+                            <StatNumber>1432</StatNumber>
+                          </Stat>
+                        </div>
+                      </div>
+
+                      <div className="  col-span-1">
+                        <div className="w-full h-20">
+                          <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
+                            <StatLabel>
+                              Non-accepted answer with higher upvotes
+                            </StatLabel>
+                            <StatNumber className="font-bold text-orange-500">
+                              2.61%
+                            </StatNumber>
+                          </Stat>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="grid gap-4 grid-cols-3">
-                    <div className="bg-white rounded-xl col-span-2 shadow-md">
-                      <div className="w-full h-96 mt-8">
-                        <ResolutionTime
-                          data={parseResolution(resolutionTimes)}
-                        />
+                </>
+              )}
+              {window.location.pathname == "/tags" && (
+                <>
+                  <div className="grid grid-row-3 grid-cols-3 gap-8">
+                    {" "}
+                    <div className="bg-white rounded-lg shadow-md pt-6  pr-8 col-span-2">
+                      <p className=" text-center text-md font-bold">
+                        Frequently Appearing Tags
+                      </p>
+                      <div className="w-full   h-96">
+                        <TagCloud wordCloudData={tagCount} />
                       </div>
                     </div>
-                    <div className="grid gap-3 grid-rows-3">
-                      <Stat className="bg-white rounded-lg shadow-md p-4 pt-6">
-                        <StatLabel>Average Resolution Time</StatLabel>
-                        <StatNumber>23 Minutes</StatNumber>
-                        <StatHelpText>Have a meal and come back</StatHelpText>
-                      </Stat>
-                      <a href="https://stackoverflow.com/questions/141284/the-difference-between-the-runnable-and-callable-interfaces-in-java">
-                        <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
-                          <StatLabel>Fastest Resolution</StatLabel>
-                          <StatNumber>2 Minutes</StatNumber>
-                          <StatHelpText>
-                            The difference between the Runnable and Callable
-                            interfaces in Java?
-                          </StatHelpText>
+                    <div className="col-span-1 ">
+                      <div className="grid grid-rows-2 gap-8">
+                        <Stat
+                          boxShadow={"md"}
+                          bgColor={"white"}
+                          borderRadius={"12px"}
+                          py={5}
+                          pl={4}
+                          h={"100%"}
+                        >
+                          <div className=" absolute -top-2 right-2 p-4 bg-orange-500 rounded-md shadow-md">
+                            <Icon
+                              as={MdThumbUp}
+                              className=" text-2xl stroke-white fill-white"
+                            ></Icon>
+                          </div>
+                          <StatLabel>Most Upvotes Tags Combination</StatLabel>
+                          <StatNumber>
+                            {topUpvote[0]} ＋ {topUpvote[1]}
+                          </StatNumber>
                         </Stat>
-                      </a>
-                      <a href="https://stackoverflow.com/questions/4052840/most-efficient-way-to-make-the-first-character-of-a-string-lower-case">
-                        <Stat className="bg-white rounded-lg shadow-md p-4 hover:bg-slate-100 transition-colors">
-                          <StatLabel>Slowest Resolution</StatLabel>
-                          <StatNumber>5 Years</StatNumber>
-                          <StatHelpText>
-                            Most efficient way to make the first character of a
-                            String lower case?
-                          </StatHelpText>
+                        <Stat
+                          boxShadow={"md"}
+                          bgColor={"white"}
+                          borderRadius={"12px"}
+                          py={5}
+                          pl={4}
+                        >
+                          <div className=" absolute -top-2 right-2 p-4 bg-sky-800 rounded-md shadow-md">
+                            <Icon
+                              as={MdRemoveRedEye}
+                              className=" text-2xl stroke-white fill-white"
+                            ></Icon>
+                          </div>
+                          <StatLabel>Most Views Tags Combination</StatLabel>
+                          <StatNumber>
+                            {topView[0]} + {topView[1]}
+                          </StatNumber>
                         </Stat>
-                      </a>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </>
               )}
               {window.location.pathname == "/user" && (
                 <>
-                <div className="grid gap-4 grid-cols-2">
-                    <div className="bg-white rounded-lg py-6">
+                  <div className="grid gap-4 grid-cols-2">
+                    <div className="bg-white shadow-md rounded-lg py-6">
                       <div className="w-full h-96">
                         <AnswerUserPie data={answerUserDistribution} />
                       </div>
                     </div>
-                    <div className="bg-white rounded-lg py-6">
+                    <div className="bg-white shadow rounded-lg py-6">
                       <div className="w-full h-96">
                         <CommentUserPie data={commentUserDistribution} />
                       </div>
                     </div>
-                </div>
-                <p className="ml-4 text-md font-bold">Frequently Appearing Users</p>
-                    <div className="w-full ml-4 mt-4 h-96">
-                        <TagCloud wordCloudData={userCount} />
+                  </div>
+                  <div className="bg-white shadow-md rounded-lg pt-4">
+                    <p className="text-center text-md font-bold">
+                      Frequently Appearing Users
+                    </p>
+                    <div className="w-full  h-96">
+                      <TagCloud wordCloudData={userCount} />
                     </div>
-                  
+                  </div>
                 </>
-              )
-              }
+              )}
               {window.location.pathname == "/answer" && (
                 <>
                   <div className="grid gap-4 grid-cols-2">
@@ -518,8 +751,7 @@ function App() {
                       <div className="w-full h-20">
                         <Stat className="bg-white rounded-lg shadow-md p-4  hover:bg-slate-100 transition-colors">
                           <StatLabel>
-                            Non-accepted answer with higher
-                            upvotes
+                            Non-accepted answer with higher upvotes
                           </StatLabel>
                           <StatNumber>2.61%</StatNumber>
                         </Stat>
@@ -537,7 +769,7 @@ function App() {
                           <Center className="p-0 m-0">
                             <Menu>
                               <span className=" font-extrabold text-xl mr-4">
-                                Top-15{" "}
+                                Top-15 Used{" "}
                               </span>
                               <MenuButton
                                 as={Button}
@@ -597,12 +829,13 @@ function App() {
                               </MenuList>
                             </Menu>
                           </Center>
+                          <p className="text-sm text-gray-400 absolute left-96">Note: we do not display <code>System</code> here, because it dominates all other classes and methods</p>
                           <TopTenClasses data={codeDataDisplay} />
                         </div>
                       </div>
                     </div>
                     <div className="grid gap-4 grid-cols-1">
-                      <div className="bg-white rounded-lg py-6">
+                      <div className="bg-white shadow-md rounded-lg py-6">
                         <div className="w-full h-96">
                           <ImportTreeMap
                             importData={parseAllTree(codeData.importNames)}
@@ -611,7 +844,7 @@ function App() {
                       </div>
                     </div>
                     <div className="grid gap-4 grid-cols-3">
-                      <div className="bg-white rounded-lg py-6 col-span-2">
+                      <div className="bg-white shadow-md rounded-lg py-6 col-span-2">
                         <div className="w-full h-96">
                           <ImportSunBlast
                             importData={parseThreeLevelTree(
@@ -620,17 +853,31 @@ function App() {
                           />
                         </div>
                       </div>
-                      <div className="col-span-1 bg-white p-6 rounded-lg">
-                        <div className=" text-center font-bold text-xl">
-                          Most Frequently Used Method
+                      <div className="col-span-1 shadow-md bg-white p-6 rounded-lg">
+                        <div className="  text-center font-bold text-lg">
+                          Most Frequently Discussed
                         </div>
-                        <div className="code pt-10">
-                          {codeData.methodNames.slice(0, 10).map((item) => (
-                            <code key={item.name}>
-                              {item.name + "()"}
-                              <br></br>
-                            </code>
-                          ))}
+                        <div className="code pl-4 grid grid-rows-5 gap-4 pt-10">
+                          <code>
+                            org.springframework
+                            <br></br>
+                          </code>
+                          <code>
+                            android.*
+                            <br></br>
+                          </code>
+                          <code>
+                            java.util
+                            <br></br>
+                          </code>
+                          <code>
+                            java.io
+                            <br></br>
+                          </code>
+                          <code>
+                            javax.swing
+                            <br></br>
+                          </code>
                         </div>
                       </div>
                     </div>

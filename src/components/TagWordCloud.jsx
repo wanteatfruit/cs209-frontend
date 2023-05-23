@@ -22,7 +22,7 @@ export default function TagCloud({wordCloudData}){
                 shape:'circle',
                 left:'center',
                 width:'90%',
-                height:'100%',
+                height:'90%',
                 textStyle:{
                     fontFamily:'Poppins',
                     fontWeight:'bold',

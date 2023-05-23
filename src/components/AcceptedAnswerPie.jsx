@@ -47,7 +47,7 @@ export default function AcceptedAnswerPie() {
   };
 
   useEffect(() => {
-    const chartDom = document.getElementById("chart");
+    const chartDom = document.getElementById("chart_ac");
     const myChart = echarts.init(chartDom);
     myChart.setOption(option);
     window.addEventListener("resize", () => {
@@ -57,7 +57,7 @@ export default function AcceptedAnswerPie() {
 
   return (
     <>
-      <div id="chart" className="w-full h-full"></div>
+      <div id="chart_ac" className="w-full h-full"></div>
     </>
   );
 }
