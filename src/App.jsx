@@ -13,7 +13,8 @@ import {
   BsStackOverflow,
 } from "react-icons/bs";
 import { VscTriangleDown, VscTriangleUp } from "react-icons/vsc";
-import { MdNumbers, MdQuestionAnswer } from "react-icons/md";
+import { MdNumbers, MdQuestionAnswer,MdThumbUp,MdRemoveRedEye
+} from "react-icons/md";
 import {
   Button,
   Center,
@@ -44,6 +45,8 @@ import { parseAllTree, parseThreeLevelTree } from "./assets/parseTree";
 import ImportSunBlast from "./components/ImportSunblast";
 import ImportTreeMap from "./components/ImportTreeMap";
 import Highlight from "react-highlight";
+import AnswerUserPie from "./components/AnswerUserPie";
+import CommentUserPie from "./components/CommentUserPie";
 const CARDBG = "bg-white rounded-lg py-4 pr-8";
 const SELECTED =
   " to-orange-300 bg-gradient-to-tr from-orange-500 w-5/6 text-white  p-3 rounded-md";
@@ -57,6 +60,11 @@ function App() {
   const [acceptedQuestion, setAcceptedQuestion] = useState([]);
   const [resolutionTimes, setResolutionTimes] = useState([]);
   const [tagCount, setTagCount] = useState([]);
+  const [topUpvote, setTopUpvote] = useState([]);
+  const [topView, setTopView] = useState([]);
+  const [answerUserDistribution, setAnswerUserDistribution] = useState([]);
+  const [commentUserDistribution, setCommentUserDistribution] = useState([]);
+  const [userCount, setUserCount] = useState([]);
   const [answerDistribution, setAnswerDistribution] = useState([]);
   const [loading, setLoading] = useState(true);
   const [codeDataDisplay, setCodeDataDisplay] = useState(
@@ -82,6 +90,12 @@ function App() {
       "http://localhost:9090/questions/get-accepted-questions"
     );
     const gettagcount = axios.get("http://localhost:9090/tags/count");
+    const gettopupvotes = axios.get("http://localhost:9090/tags/get-top-upvotes");
+    const gettopview = axios.get("http://localhost:9090/tags/get-top-view");
+    const getansweruserdis = axios.get("http://localhost:9090/answers/get-user-dist");
+    const getcommentuserdis = axios.get("http://localhost:9090/comments/get-user-dist");
+    const getusercount = axios.get("http://localhost:9090/users/count-user");
+
     const getresolution = axios.get(
       "http://localhost:9090/answers/get-resolution-time"
     );
@@ -95,6 +109,11 @@ function App() {
         getanscntdist,
         getacceptedquestion,
         gettagcount,
+        gettopupvotes,
+        gettopview,
+        getansweruserdis,
+        getcommentuserdis,
+        getusercount,
         getresolution,
       ])
       .then(
@@ -107,7 +126,12 @@ function App() {
           setAnswerDistribution(allData[4].data);
           setAcceptedQuestion(allData[5].data);
           setTagCount(allData[6].data);
-          setResolutionTimes(allData[7].data);
+          setTopUpvote(allData[7].data);
+          setTopView(allData[8].data);
+          setAnswerUserDistribution(allData[9].data);
+          setCommentUserDistribution(allData[10].data);
+          setUserCount(allData[11].data);
+          setResolutionTimes(allData[12].data);
           setLoading(false);
         })
       )
@@ -175,6 +199,15 @@ function App() {
                 Answers
               </a>
             )}
+              {window.location.pathname == "/user" ? (
+                  <a href="/user" className={SELECTED}>
+                      User
+                  </a>
+              ) : (
+                  <a href="/user" className={UNSELECTED}>
+                      User
+                  </a>
+              )}
             {window.location.pathname == "/code" ? (
               <a
                 href="/code"
@@ -267,6 +300,40 @@ function App() {
                       <StatLabel>Average #Answers</StatLabel>
                       <StatNumber>{avgAnswers}</StatNumber>
                     </Stat>
+                      <Stat
+                          boxShadow={"md"}
+                          bgColor={"white"}
+                          borderRadius={"12px"}
+                          py={5}
+                          pl={4}
+                      >
+                          <div className=" absolute -top-2 right-2 p-4 bg-sky-800 rounded-md shadow-md">
+                              <Icon
+                                  as={MdThumbUp}
+                                  className=" text-2xl stroke-white fill-white"
+                              ></Icon>
+                          </div>
+                          <StatLabel>Most Upvotes Tags Combination</StatLabel>
+                          <StatNumber>{topUpvote[0]}</StatNumber>
+                          <StatNumber>{topUpvote[1]}</StatNumber>
+                      </Stat>
+                      <Stat
+                          boxShadow={"md"}
+                          bgColor={"white"}
+                          borderRadius={"12px"}
+                          py={5}
+                          pl={4}
+                      >
+                          <div className=" absolute -top-2 right-2 p-4 bg-sky-800 rounded-md shadow-md">
+                              <Icon
+                                  as={MdRemoveRedEye}
+                                  className=" text-2xl stroke-white fill-white"
+                              ></Icon>
+                          </div>
+                          <StatLabel>Most Views Tags Combination</StatLabel>
+                          <StatNumber>{topView[0]}</StatNumber>
+                          <StatNumber>{topView[1]}</StatNumber>
+                      </Stat>
 
                     <div className="hover:bg-slate-100 transition-all col-span-2 bg-white shadow-md rounded-xl p-6">
                       <a
@@ -393,6 +460,28 @@ function App() {
                   </div>
                 </div>
               )}
+              {window.location.pathname == "/user" && (
+                <>
+                <div className="grid gap-4 grid-cols-2">
+                    <div className="bg-white rounded-lg py-6">
+                      <div className="w-full h-96">
+                        <AnswerUserPie data={answerUserDistribution} />
+                      </div>
+                    </div>
+                    <div className="bg-white rounded-lg py-6">
+                      <div className="w-full h-96">
+                        <CommentUserPie data={commentUserDistribution} />
+                      </div>
+                    </div>
+                </div>
+                <p className="ml-4 text-md font-bold">Frequently Appearing Users</p>
+                    <div className="w-full ml-4 mt-4 h-96">
+                        <TagCloud wordCloudData={userCount} />
+                    </div>
+                  
+                </>
+              )
+              }
               {window.location.pathname == "/answer" && (
                 <>
                   <div className="grid gap-4 grid-cols-2">
