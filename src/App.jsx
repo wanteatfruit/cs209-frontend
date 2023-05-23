@@ -469,7 +469,7 @@ function App() {
                                   onClick={() => {
                                     setChooseCodeType("Classes");
                                     setCodeDataDisplay(
-                                      codeData.classNames.slice(0, 15)
+                                      codeData.classNames.slice(1, 16)
                                     );
                                   }}
                                 >
@@ -484,7 +484,7 @@ function App() {
                                   onClick={() => {
                                     setChooseCodeType("Methods");
                                     setCodeDataDisplay(
-                                      codeData.methodNames.slice(0, 15)
+                                      codeData.methodNames.slice(1, 16)
                                     );
                                   }}
                                 >
@@ -499,7 +499,7 @@ function App() {
                                   onClick={() => {
                                     setChooseCodeType("Annotations");
                                     setCodeDataDisplay(
-                                      codeData.annotationNames.slice(0, 15)
+                                      codeData.annotationNames.slice(1, 16)
                                     );
                                   }}
                                 >
