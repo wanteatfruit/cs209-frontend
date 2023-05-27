@@ -51,6 +51,7 @@ import ImportTreeMap from "./components/ImportTreeMap";
 import Highlight from "react-highlight";
 import AnswerUserPie from "./components/AnswerUserPie";
 import CommentUserPie from "./components/CommentUserPie";
+import UserCntPie from "./components/UserCntPie";
 const CARDBG = "bg-white rounded-lg py-4 pr-8";
 const SELECTED =
   " to-orange-300 bg-gradient-to-tr from-orange-500 w-5/6 text-white  p-3 rounded-md";
@@ -69,6 +70,7 @@ function App() {
   const [answerUserDistribution, setAnswerUserDistribution] = useState([]);
   const [commentUserDistribution, setCommentUserDistribution] = useState([]);
   const [userCount, setUserCount] = useState([]);
+  const [userDis, setUserDis] = useState([]);
   const [answerDistribution, setAnswerDistribution] = useState([]);
   const [loading, setLoading] = useState(true);
   const [codeDataDisplay, setCodeDataDisplay] = useState(
@@ -110,6 +112,10 @@ function App() {
       "http://localhost:9090/answers/get-resolution-time"
     );
 
+    const getuserdis = axios.get(
+      "http://localhost:9090/questions/get-user-dist"
+    )
+
     axios
       .all([
         getall,
@@ -125,6 +131,7 @@ function App() {
         getcommentuserdis,
         getusercount,
         getresolution,
+        getuserdis
       ])
       .then(
         axios.spread((...allData) => {
@@ -142,6 +149,7 @@ function App() {
           setCommentUserDistribution(allData[10].data);
           setUserCount(allData[11].data);
           setResolutionTimes(allData[12].data);
+          setUserDis(allData[13].data);
           setLoading(false);
         })
       )
@@ -694,6 +702,11 @@ function App() {
               {window.location.pathname == "/user" && (
                 <>
                   <div className="grid gap-4 grid-cols-2">
+                    <div className="bg-white shadow rounded-lg py-6">
+                      <div className="w-full h-96">
+                        <UserCntPie data={userDis} />
+                      </div>
+                    </div>
                     <div className="bg-white shadow-md rounded-lg py-6">
                       <div className="w-full h-96">
                         <AnswerUserPie data={answerUserDistribution} />

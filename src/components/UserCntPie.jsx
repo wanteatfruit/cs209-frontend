@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import * as echarts from "echarts";
-export default function AnswerUserPie({data}) {
+export default function UserCntPie({data}) {
   const option = {
     tooltip: {
       trigger: 'item',
@@ -18,7 +18,7 @@ export default function AnswerUserPie({data}) {
         right:'30',
     },
     title: {
-      text: "User Count Distribution From Post Answers",
+      text: "User Count Distribution",
       left: "center",
       textStyle: {
         fontFamily: "Poppins",
@@ -40,8 +40,8 @@ export default function AnswerUserPie({data}) {
             fontFamily: "Poppins",
         },
         data: data.map((num,index)=>{
-            if(index>4){
-                return {value:num,name:'5+'}
+            if(index>6){
+                return {value:num,name:'7+'}
             }else{
                 return {value:num, name: `${index+1}`}
             }
@@ -51,7 +51,7 @@ export default function AnswerUserPie({data}) {
   };
 
   useEffect(() => {
-    const chartDom = document.getElementById("user-count-pie");
+    const chartDom = document.getElementById("user--pie");
     const myChart = echarts.init(chartDom);
     myChart.setOption(option);
     window.addEventListener("resize", () => {
@@ -61,7 +61,7 @@ export default function AnswerUserPie({data}) {
 
   return (
     <>
-      <div id="user-count-pie" className="w-full h-full"></div>
+      <div id="user--pie" className="w-full h-full"></div>
     </>
   );
 }

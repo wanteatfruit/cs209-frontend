@@ -27,7 +27,7 @@ export default function CommentUserPie({data}) {
     series: [
       {
         type: "pie",
-        name: "Answer Count",
+        name: "Unique User Count",
         center: ['50%', '50%'],
         itemStyle:{
             borderRadius:10,
